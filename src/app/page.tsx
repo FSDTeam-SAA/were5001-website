@@ -5,15 +5,14 @@ import FAQ from "@/features/Home/components/FAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
 import WhyPlayersBuy from "@/features/Home/components/WhyPlayersBuy";
 
- 
 export default function Home() {
   return (
     <div>
       <Navbar />
       <Banner />
       <WhyPlayersBuy />
-      <FAQ />
       <TrustedByTraders />
+      <FAQ />
       <Footer />
     </div>
   );
