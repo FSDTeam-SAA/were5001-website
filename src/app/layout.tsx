@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Geist, Geist_Mono, Inter } from "next/font/google";
+import { EB_Garamond, Geist, Geist_Mono, Inter, Open_Sans } from "next/font/google";
 import { MainProviders } from "@/Providers/MainProviders";
 import "./globals.css";
 
@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const ebGaramond = EB_Garamond({ variable: "--font-eb-garamond", subsets: ["latin"] });
+const openSans = Open_Sans({ variable: "--font-open-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Were5001",
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${ebGaramond.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${ebGaramond.variable} ${openSans.variable} antialiased`}
     >
       <body><MainProviders>{children}</MainProviders></body>
     </html>
