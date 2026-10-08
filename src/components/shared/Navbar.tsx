@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useCartStore } from "@/store/cart.store";
 
 const navLinks = [
   { name: "HOME", href: "/" },
@@ -12,13 +13,24 @@ const navLinks = [
   { name: "BUY RS3 GOLD", href: "/buy/rs3" },
   { name: "SELL RS3 GOLD", href: "/sell/rs3" },
   { name: "ITEMS", href: "/items" },
+  { name: "CONTACT", href: "/contact" },
+];
+
+const osrsServices = [
+  { name: "Skilling", href: "/services/skilling" },
+  { name: "Questing", href: "/services/questing" },
+  { name: "Fire Capes", href: "/services/fire-capes" },
+  { name: "Achievement Diaries", href: "/services/achievement-diaries" },
+  { name: "Infernal Capes", href: "/services/infernal-capes" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const totalCartItems = useCartStore((state) => state.getTotalItems());
 
   useEffect(() => {
     const handleScroll = () => {
@@ -105,25 +117,16 @@ export default function Navbar() {
 
             {/* Dropdown Menu */}
             {servicesDropdown && (
-              <div className="absolute top-[calc(100%-8px)] left-0 min-w-[190px] rounded-xl border border-[#233544] bg-[linear-gradient(160deg,rgba(18,28,36,0.95),rgba(8,15,21,0.98))] p-2 shadow-[0_12px_32px_rgba(0,0,0,0.8)] backdrop-blur-md animate-fade-in-up">
-                <Link
-                  href="/services/questing"
-                  className="block rounded-lg px-3.5 py-2 text-xs font-semibold text-[#cbd6dc] transition-colors hover:bg-[#d6a43a]/15 hover:text-[#ffdf70]"
-                >
-                  Questing Services
-                </Link>
-                <Link
-                  href="/services/powerleveling"
-                  className="block rounded-lg px-3.5 py-2 text-xs font-semibold text-[#cbd6dc] transition-colors hover:bg-[#d6a43a]/15 hover:text-[#ffdf70]"
-                >
-                  Powerleveling
-                </Link>
-                <Link
-                  href="/services/bossing"
-                  className="block rounded-lg px-3.5 py-2 text-xs font-semibold text-[#cbd6dc] transition-colors hover:bg-[#d6a43a]/15 hover:text-[#ffdf70]"
-                >
-                  Minigames &amp; Bossing
-                </Link>
+              <div className="absolute top-[calc(100%-8px)] left-0 min-w-[210px] rounded-xl border border-[#233544] bg-[linear-gradient(160deg,rgba(18,28,36,0.96),rgba(8,15,21,0.98))] p-2 shadow-[0_16px_36px_rgba(0,0,0,0.85),0_0_20px_rgba(214,164,58,0.15)] backdrop-blur-md animate-fade-in-up">
+                {osrsServices.map((service) => (
+                  <Link
+                    key={service.name}
+                    href={service.href}
+                    className="block rounded-lg px-3.5 py-2.5 text-xs font-semibold text-[#cbd6dc] transition-all duration-150 hover:bg-[#d6a43a]/15 hover:text-[#ffdf70] hover:translate-x-1"
+                  >
+                    {service.name}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
@@ -148,7 +151,7 @@ export default function Navbar() {
           <Link
             href="/cart"
             className="group relative grid size-11 place-items-center rounded-xl border border-[#213340] bg-[linear-gradient(160deg,rgba(18,29,38,0.7),rgba(8,16,22,0.85))] shadow-sm transition-all duration-200 hover:border-[#d6a43a]/60 hover:shadow-[0_0_15px_rgba(214,164,58,0.25)] max-[640px]:hidden"
-            aria-label="Shopping cart with 0 items"
+            aria-label={`Shopping cart with ${totalCartItems} items`}
           >
             <Image
               src="/assets/nav-cart.svg"
@@ -158,7 +161,7 @@ export default function Navbar() {
               className="transition-transform group-hover:scale-105"
             />
             <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[10px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.5)]">
-              0
+              {totalCartItems}
             </span>
           </Link>
 
@@ -211,14 +214,37 @@ export default function Navbar() {
               );
             })}
 
-            <Link
-              href="/services"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-[#cbd6dc] transition-colors hover:bg-[#d6a43a]/10 hover:text-[#ffdf70]"
-            >
-              <span>OSRS SERVICES</span>
-              <span className="text-xs text-[#d6a43a]">›</span>
-            </Link>
+            {/* OSRS Services Collapsible in Mobile Menu */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-[#cbd6dc] transition-colors hover:bg-[#d6a43a]/10 hover:text-[#ffdf70]"
+              >
+                <span>OSRS SERVICES</span>
+                <span
+                  className={`text-xs text-[#d6a43a] transition-transform duration-200 ${
+                    mobileServicesOpen ? "rotate-90" : ""
+                  }`}
+                >
+                  ›
+                </span>
+              </button>
+              {mobileServicesOpen && (
+                <div className="ml-3 mt-1 space-y-1 border-l border-[#d6a43a]/25 pl-3">
+                  {osrsServices.map((service) => (
+                    <Link
+                      key={service.name}
+                      href={service.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block rounded-md px-2.5 py-1.5 text-xs font-medium text-[#8e9ca7] transition-colors hover:text-[#ffdf70]"
+                    >
+                      {service.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="my-2 h-px bg-[#182631]" />
 
@@ -244,7 +270,7 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-1.5 text-xs font-semibold text-[#ffdf70]"
               >
-                <span>Cart (0)</span>
+                <span>Cart ({totalCartItems})</span>
               </Link>
             </div>
           </nav>

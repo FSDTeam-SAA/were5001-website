@@ -49,7 +49,7 @@ export default function ProductCard({ variant }: { variant: Variant }) {
   return (
     <article
       aria-label={`Buy ${game} Gold`}
-      className="@container group relative aspect-square w-[420px] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-12px_rgba(0,0,0,.9),0_0_0_1px_rgba(214,164,58,.18)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-[0_26px_50px_-12px_rgba(0,0,0,.95),0_0_0_1px_rgba(214,164,58,.45),0_0_34px_-6px_rgba(214,164,58,.35)] max-[1100px]:w-[min(46vw,420px)] max-[640px]:w-[min(88vw,360px)]"
+      className="@container group relative aspect-square w-[420px] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-12px_rgba(0,0,0,.9),0_0_0_1px_rgba(214,164,58,.18)] transition-shadow duration-300 hover:shadow-[0_26px_50px_-12px_rgba(0,0,0,.95),0_0_0_1px_rgba(214,164,58,.45),0_0_34px_-6px_rgba(214,164,58,.35)] max-[1100px]:w-[min(46vw,420px)] max-[640px]:w-[min(88vw,360px)]"
     >
       <Image
         src={panel}
@@ -119,10 +119,10 @@ export default function ProductCard({ variant }: { variant: Variant }) {
         type="button"
         id={`${variant}-buy-now`}
         aria-label={`Buy ${game} Gold`}
-        className="group absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')]"
+        className="group/btn absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')]"
       >
         <ChessQueen
-          className="pointer-events-none absolute left-[17%] top-[45%] -translate-y-1/2 h-[32%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)] transition-transform duration-200 group-hover:scale-110"
+          className="pointer-events-none absolute left-[17%] top-[45%] -translate-y-1/2 h-[32%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)] transition-transform duration-200 group-hover/btn:scale-110"
           strokeWidth={2.4}
         />
       </button>
