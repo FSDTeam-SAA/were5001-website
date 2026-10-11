@@ -6,9 +6,26 @@ import { useState } from "react";
 
 type Variant = "osrs" | "rs3";
 
-const PRODUCTS: Record<Variant, { game: string; pricePerM: number; panel: string }> = {
-  osrs: { game: "OSRS", pricePerM: 0.22, panel: "/assets/product-panel.png" },
-  rs3: { game: "RS3", pricePerM: 0.027, panel: "/assets/hero-raw1.png" },
+const PRODUCTS: Record<
+  Variant,
+  { game: string; pricePerM: number; panel: string; logo: string; logoWidth: number; logoHeight: number }
+> = {
+  osrs: {
+    game: "OSRS",
+    pricePerM: 0.22,
+    panel: "/assets/product-panel.png",
+    logo: "/assets/card-1.png",
+    logoWidth: 600,
+    logoHeight: 231,
+  },
+  rs3: {
+    game: "RS3",
+    pricePerM: 0.027,
+    panel: "/assets/hero-raw1.png",
+    logo: "/assets/card-2.png",
+    logoWidth: 600,
+    logoHeight: 180,
+  },
 };
 
 /** Keep only digits and a single decimal point. */
@@ -29,7 +46,7 @@ const boxClass =
   "grid h-full w-[9.5cqw] shrink-0 place-items-center bg-[url('/assets/slideshow/box-bg.png')] bg-cover bg-center bg-no-repeat font-[family-name:var(--font-open-sans)] text-[4.3cqw] font-bold text-[#040b11]";
 
 export default function ProductCard({ variant }: { variant: Variant }) {
-  const { game, pricePerM, panel } = PRODUCTS[variant];
+  const { game, pricePerM, panel, logo, logoWidth, logoHeight } = PRODUCTS[variant];
   const [millions, setMillions] = useState("0");
   const [dollars, setDollars] = useState("0.00");
 
@@ -59,6 +76,18 @@ export default function ProductCard({ variant }: { variant: Variant }) {
         sizes="(max-width: 640px) 88vw, (max-width: 1100px) 46vw, 420px"
         className="object-cover"
       />
+
+      {/* Game Logo in top section */}
+      <div className="pointer-events-none absolute inset-x-0 top-[3.5%] flex h-[23cqw] items-center justify-center px-4">
+        <Image
+          src={logo}
+          alt={`${game} Logo`}
+          width={logoWidth}
+          height={logoHeight}
+          priority
+          className="max-h-[19cqw] w-auto max-w-[64cqw] object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)]"
+        />
+      </div>
 
       {/* Title */}
       <h2 className="absolute inset-x-[6%] top-[29.5%] text-center font-[family-name:var(--font-eb-garamond)] text-[7.6cqw] font-semibold leading-none tracking-[.02em] text-[#e2c66a] drop-shadow-[0_2px_2px_rgba(0,0,0,.9)]">
@@ -119,10 +148,10 @@ export default function ProductCard({ variant }: { variant: Variant }) {
         type="button"
         id={`${variant}-buy-now`}
         aria-label={`Buy ${game} Gold`}
-        className="group/btn absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')]"
+        className="group/btn absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97]"
       >
         <ChessQueen
-          className="pointer-events-none absolute left-[17%] top-[45%] -translate-y-1/2 h-[32%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)] transition-transform duration-200 group-hover/btn:scale-110"
+          className="pointer-events-none absolute left-[17%] top-[45%] -translate-y-1/2 h-[32%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)]"
           strokeWidth={2.4}
         />
       </button>

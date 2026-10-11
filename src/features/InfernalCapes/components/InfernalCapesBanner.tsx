@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Gem,
-  ArrowRight,
+  Crown,
+  Lock,
   ShoppingCart,
   Check,
   Shield,
@@ -13,17 +13,69 @@ import {
   Sparkles,
 } from "lucide-react";
 import {
-  INFERNAL_CAPE_STEPS,
-  BUILD_OPTIONS,
   WEAPON_OPTIONS,
   LIMITATION_OPTIONS,
   calculateInfernalPrice,
 } from "../constants";
 import { useCartStore } from "@/store/cart.store";
 
+const INFERNAL_CAPE_FEATURES = [
+  {
+    icon: <Crown className="size-5 text-[#f5ba42] drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]" />,
+    title: "Inferno Specialists",
+    description:
+      "Your Infernal Cape is handled by players experienced with high-level PvM.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4" />
+        <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6" />
+        <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
+        <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+      </svg>
+    ),
+    title: "100% Manual Completion",
+    description:
+      "Every wave and encounter is completed manually. No bots, macros, or automated scripts.",
+  },
+  {
+    icon: <Lock className="size-5 text-[#f5ba42] drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]" />,
+    title: "Controlled Account Access",
+    description:
+      "Access is limited to what is required for your order. Temporary password recommended.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <line x1="6" y1="19" x2="6" y2="14" />
+        <line x1="12" y1="19" x2="12" y2="9" />
+        <line x1="18" y1="19" x2="18" y2="4" />
+      </svg>
+    ),
+    title: "Progress Updates",
+    description:
+      "Receive updates throughout your order and confirmation once your cape is complete.",
+  },
+];
+
 export default function InfernalCapesBanner() {
-  // Matching screenshot default selection: Pure + Armadyl Crossbow = $116.99
-  const [selectedBuild, setSelectedBuild] = useState<"main" | "zerker" | "pure">("pure");
   const [selectedWeapon, setSelectedWeapon] = useState<
     "twisted_bow" | "bow_of_faerdhinen" | "armadyl_crossbow"
   >("armadyl_crossbow");
@@ -32,21 +84,20 @@ export default function InfernalCapesBanner() {
 
   const addItem = useCartStore((state) => state.addItem);
 
-  const currentPrice = calculateInfernalPrice(selectedBuild, selectedWeapon, noRigour);
+  const currentPrice = calculateInfernalPrice("main", selectedWeapon, noRigour);
 
-  const currentBuildObj = BUILD_OPTIONS.find((b) => b.id === selectedBuild) || BUILD_OPTIONS[2];
   const currentWeaponObj =
     WEAPON_OPTIONS.find((w) => w.id === selectedWeapon) || WEAPON_OPTIONS[2];
 
   const handleAddToCart = () => {
     const limitationsLabel = noRigour ? " (No Rigour)" : "";
-    const itemName = `Infernal Cape - ${currentBuildObj.name} + ${currentWeaponObj.name}${limitationsLabel}`;
+    const itemName = `Infernal Cape - ${currentWeaponObj.name}${limitationsLabel}`;
 
     addItem({
-      id: `infernal-${selectedBuild}-${selectedWeapon}-${noRigour ? "no-rigour" : "standard"}`,
+      id: `infernal-${selectedWeapon}-${noRigour ? "no-rigour" : "standard"}`,
       name: itemName,
       price: currentPrice,
-      image: currentBuildObj.image,
+      image: currentWeaponObj.image,
       inStock: true,
       category: "OSRS Infernal Cape Service",
     });
@@ -57,13 +108,24 @@ export default function InfernalCapesBanner() {
 
   return (
     <section className="relative overflow-hidden bg-[#03060a] pt-12 pb-24 font-[family-name:var(--font-inter)] text-white sm:pt-14 sm:pb-32">
-      {/* 1. Theme Background Artwork */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
-        style={{ backgroundImage: "url('/assets/SELL-OSRS-GOLD.png')" }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#020609_0%,rgba(3,6,10,0.5)_20%,rgba(3,6,10,0.85)_70%,#03060a_100%)]" />
-      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 size-[650px] rounded-full bg-[#ff5722]/15 blur-[140px]" />
+      {/* 1. Theme Background Artwork (infernal-capes.jpg) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[640px] sm:h-[720px] md:h-[820px] overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center sm:bg-top bg-no-repeat opacity-100"
+          style={{ backgroundImage: "url('/assets/infernal-capes.jpg')" }}
+        />
+        {/* Very light darkening to keep contrast without obscuring the art */}
+        <div className="absolute inset-0 bg-[#03060a]/15" />
+        {/* Soft Navbar blend */}
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#03060a]/80 to-transparent" />
+        {/* Subtle vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_95%_80%_at_50%_30%,transparent_55%,rgba(3,6,10,0.4)_100%)]" />
+        {/* Smooth bottom fade into infernal cape services */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#03060a] via-[#03060a]/60 to-transparent" />
+      </div>
+
+      {/* Decorative Fiery Golden Light Beam */}
+      <div className="pointer-events-none absolute top-0 left-1/2 h-[340px] w-[920px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(255,87,34,0.18),transparent_70%)] blur-3xl" />
 
       <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
         {/* Page Main Header */}
@@ -89,98 +151,35 @@ export default function InfernalCapesBanner() {
           </p>
         </div>
 
-        {/* 4-Step Process Tutorial Section (From User Request) */}
-        <div className="mb-10 rounded-2xl border border-[#261f18] bg-[#0a0d14]/90 p-5 sm:p-6 shadow-[0_12px_32px_rgba(0,0,0,0.7)] backdrop-blur-md">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-            {INFERNAL_CAPE_STEPS.map((step, idx) => (
-              <div
-                key={step.step}
-                className="relative flex items-center gap-3.5 rounded-xl border border-[#1e2532] bg-[#0f1420]/80 p-4 transition-all hover:border-[#d6a43a]/50"
-              >
-                {/* Step badge with Gem */}
-                <div className="relative flex size-10 shrink-0 items-center justify-center rounded-lg bg-[linear-gradient(135deg,#d49320,#8c590b)] text-white shadow-md">
-                  <Gem className="size-5" />
-                  <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-[#ffda5d] text-[10px] font-black text-[#1a1205]">
-                    {step.step}
-                  </span>
-                </div>
-
-                {/* Step Text */}
-                <p className="text-xs sm:text-[13px] font-semibold leading-snug text-[#cbd6dc]">
-                  {step.title}
-                </p>
-
-                {/* Arrow connecting next step (on lg) */}
-                {idx < 3 && (
-                  <ArrowRight className="pointer-events-none hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 size-4 text-[#d6a43a]/60 z-10" />
-                )}
+        {/* Trust & Guarantee Cards matching Screenshot */}
+        <div className="mb-10 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 sm:mb-12">
+          {INFERNAL_CAPE_FEATURES.map((feature) => (
+            <div
+              key={feature.title}
+              className="flex items-center gap-3.5 rounded-xl border border-[#f5ba42]/50 bg-[#090f17]/90 p-4 sm:p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.65)] backdrop-blur-md transition-all duration-300 hover:border-[#f5ba42] hover:bg-[#0e1624] hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(245,186,66,0.2)]"
+            >
+              {/* Circular Gold Outline Icon Badge */}
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#f5ba42]/40 bg-[#141d2b]/60 shadow-[0_0_12px_rgba(245,186,66,0.12)]">
+                {feature.icon}
               </div>
-            ))}
-          </div>
+
+              {/* Text Info */}
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[14px] sm:text-[15px] font-bold leading-snug text-[#f5ba42]">
+                  {feature.title}
+                </h3>
+                <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#94a3b8]">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* STEP 1: SELECT YOUR ACCOUNT BUILD (matching screenshot) */}
+        {/* STEP 1: WEAPON TO USE (matching screenshot) */}
         <div className="mb-8 sm:mb-10">
           <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-3.5 flex items-center gap-2">
-            <span className="text-[#d6a43a]">1.</span> SELECT YOUR ACCOUNT BUILD
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
-            {BUILD_OPTIONS.map((build) => {
-              const isSelected = selectedBuild === build.id;
-              return (
-                <button
-                  key={build.id}
-                  type="button"
-                  onClick={() => setSelectedBuild(build.id)}
-                  className={`group relative flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
-                    isSelected
-                      ? "border-[#d6a43a] bg-[#161309]/90 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
-                      : "border-[#1e2633] bg-[#090d14]/85 hover:border-[#d6a43a]/50 hover:bg-[#0f1420]"
-                  }`}
-                >
-                  {/* Radio Circle */}
-                  <div
-                    className={`flex size-5 shrink-0 items-center justify-center rounded-full border transition-all ${
-                      isSelected
-                        ? "border-[#d6a43a] bg-[#d6a43a]"
-                        : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
-                    }`}
-                  >
-                    {isSelected && <div className="size-2 rounded-full bg-[#03060a]" />}
-                  </div>
-
-                  {/* Build Icon */}
-                  <div className="relative flex size-8 shrink-0 items-center justify-center">
-                    <Image
-                      src={build.image}
-                      alt={build.name}
-                      width={32}
-                      height={32}
-                      className="size-7 object-contain drop-shadow-md"
-                      unoptimized
-                    />
-                  </div>
-
-                  {/* Detail */}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-extrabold tracking-wide text-white">
-                      {build.name}
-                    </div>
-                    <div className="text-xs text-[#8e9ca7] font-medium truncate">
-                      {build.subtitle}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* STEP 2: WEAPON TO USE (matching screenshot) */}
-        <div className="mb-8 sm:mb-10">
-          <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-3.5 flex items-center gap-2">
-            <span className="text-[#d6a43a]">2.</span> WEAPON TO USE
+            <span className="text-[#d6a43a]">1.</span> WEAPON TO USE
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
@@ -232,10 +231,10 @@ export default function InfernalCapesBanner() {
           </div>
         </div>
 
-        {/* STEP 3: ACCOUNT LIMITATIONS (matching screenshot) */}
+        {/* STEP 2: ACCOUNT LIMITATIONS (matching screenshot) */}
         <div className="mb-10">
           <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-3.5 flex items-center gap-2">
-            <span className="text-[#d6a43a]">3.</span> ACCOUNT LIMITATIONS
+            <span className="text-[#d6a43a]">2.</span> ACCOUNT LIMITATIONS
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
@@ -296,7 +295,7 @@ export default function InfernalCapesBanner() {
                 ${currentPrice.toFixed(2)}
               </div>
               <div className="text-xs text-[#8e9ca7] font-medium mt-1">
-                {currentBuildObj.name} • {currentWeaponObj.name}
+                {currentWeaponObj.name}
                 {noRigour ? " • No Rigour" : ""}
               </div>
             </div>

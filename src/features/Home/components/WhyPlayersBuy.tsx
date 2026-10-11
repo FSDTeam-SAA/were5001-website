@@ -8,7 +8,7 @@ type Benefit = {
 
 function IconContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="grid size-14 place-items-center rounded-2xl border border-[#d6a43a]/35 bg-[linear-gradient(180deg,rgba(214,164,58,0.14),rgba(214,164,58,0.02))] text-[#ffd75a] shadow-[0_4px_16px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:border-[#d6a43a]/70 group-hover:shadow-[0_0_20px_rgba(214,164,58,0.35)] group-hover:scale-105">
+    <div className="grid size-14 place-items-center rounded-2xl border border-[#d6a43a]/70 bg-[linear-gradient(180deg,rgba(214,164,58,0.18),rgba(214,164,58,0.03))] text-[#ffd75a] shadow-[0_4px_16px_rgba(0,0,0,0.5),0_0_20px_rgba(214,164,58,0.35),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300">
       <svg
         aria-hidden="true"
         viewBox="0 0 64 64"
@@ -138,10 +138,10 @@ export default function WhyPlayersBuy() {
           {benefits.map((benefit, index) => (
             <article
               key={index}
-              className="group relative flex min-h-[290px] flex-col items-center rounded-2xl border border-[#21313e] bg-[linear-gradient(160deg,rgba(18,29,38,0.8),rgba(7,15,21,0.95))] p-6 text-center shadow-[0_12px_28px_-12px_rgba(0,0,0,0.8)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-[#d6a43a]/55 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.9),0_0_24px_-6px_rgba(214,164,58,0.25)]"
+              className="group relative flex min-h-[290px] flex-col items-center rounded-2xl border border-[#d6a43a]/55 bg-[linear-gradient(160deg,rgba(18,29,38,0.85),rgba(7,15,21,0.95))] p-6 text-center shadow-[0_16px_36px_-12px_rgba(0,0,0,0.9),0_0_24px_-6px_rgba(214,164,58,0.22)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-[#d6a43a]/80 hover:shadow-[0_22px_44px_-12px_rgba(0,0,0,0.95),0_0_32px_-6px_rgba(214,164,58,0.38)]"
             >
               {/* Subtle gold top line accent */}
-              <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#d6a43a]/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#d6a43a]/70 to-transparent opacity-100" />
 
               {/* Icon Container */}
               <div className="mb-5 flex items-center justify-center">
@@ -149,12 +149,12 @@ export default function WhyPlayersBuy() {
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-bold leading-snug text-[#f0f4f7] transition-colors duration-200 group-hover:text-[#ffdf70]">
+              <h3 className="text-base font-bold leading-snug text-[#ffdf70]">
                 {benefit.title}
               </h3>
 
               {/* Description */}
-              <p className="mt-3 text-[13px] leading-relaxed text-[#8c9ba5] transition-colors duration-200 group-hover:text-[#a5b4be]">
+              <p className="mt-3 text-[13px] leading-relaxed text-[#b5c4ce]">
                 {benefit.description}
               </p>
             </article>

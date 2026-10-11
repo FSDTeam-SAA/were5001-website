@@ -170,15 +170,16 @@ export default function SellOsrsBanner() {
 
   return (
     <section className="relative overflow-hidden bg-[#03060a] pt-12 pb-24 font-[family-name:var(--font-inter)] text-white sm:pt-14 sm:pb-28">
-      {/* 1. Background image: SELL-OSRS-GOLD.png */}
+      {/* 1. Background image: osrs-imag-3.jpg */}
       <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        style={{ backgroundImage: "url('/assets/SELL-OSRS-GOLD.png')" }}
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/assets/osrs-imag-3.jpg')" }}
       />
-
-      {/* Atmospheric dark gradient overlays to guarantee perfect text contrast while preserving castle artwork */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_55%_at_50%_20%,rgba(18,14,10,0.55),rgba(3,6,10,0.92)_85%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(3,6,10,0.72)_0%,rgba(3,6,10,0.85)_50%,#020609_100%)]" />
+      {/* Light black shadow overlay for aesthetic depth */}
+      <div className="pointer-events-none absolute inset-0 bg-black/40" />
+      {/* Subtle atmospheric vignette & smooth bottom fade */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,transparent_35%,rgba(3,7,13,0.45)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#03070d] via-[#03070d]/50 to-transparent" />
 
       {/* Subtle top golden light beam */}
       <div className="pointer-events-none absolute top-0 left-1/2 h-[340px] w-[880px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(214,164,58,0.22),transparent_70%)] blur-3xl" />
@@ -515,20 +516,7 @@ export default function SellOsrsBanner() {
             </div>
           </button>
 
-          {/* Trust Assurances Underneath Button */}
-          <div className="mt-1 flex flex-wrap items-center justify-center gap-5 text-xs font-semibold text-[#8e9ba6] sm:text-sm max-[640px]:gap-3">
-            <span className="flex items-center gap-1.5">
-              <span className="text-emerald-400">✓</span> Instant In-Game Trade
-            </span>
-            <span className="text-[#414f5b]">•</span>
-            <span className="flex items-center gap-1.5">
-              <span className="text-[#d6a43a]">🛡️</span> 100% Sourced by Pro Gamers
-            </span>
-            <span className="text-[#414f5b]">•</span>
-            <span className="flex items-center gap-1.5">
-              <span className="text-sky-400">🔒</span> 256-Bit SSL Encrypted
-            </span>
-          </div>
+
 
           {quoteSubmitted && (
             <div

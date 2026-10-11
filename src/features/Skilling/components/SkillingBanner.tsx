@@ -12,21 +12,100 @@ import {
   Check,
   Search,
   Sparkles,
-  ArrowRight,
-  Gem,
 } from "lucide-react";
 import {
-  SKILLING_STEPS,
-  ACCOUNT_PRESETS,
   OSRS_SKILLS,
   TRAINING_METHODS,
   getXpForLevel,
 } from "../constants";
 import { useCartStore } from "@/store/cart.store";
 
+const SKILLING_FEATURES = [
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v4" />
+        <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v6" />
+        <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8" />
+        <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+      </svg>
+    ),
+    title: "100% Manual Training",
+    description:
+      "Every skill is trained manually by experienced players. No bots, macros, or automated scripts.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <circle cx="12" cy="10" r="2.5" />
+        <path d="M8.5 16.5a3.5 3.5 0 0 1 7 0" />
+      </svg>
+    ),
+    title: "Experienced Skillers",
+    description:
+      "Your account is assigned to a player experienced with the training method selected for your order.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <rect width="14" height="10" x="5" y="11" rx="2" />
+        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        <circle cx="12" cy="15.5" r="1" fill="#f5ba42" />
+        <line x1="12" y1="16.5" x2="12" y2="18" />
+      </svg>
+    ),
+    title: "Account Access Protection",
+    description:
+      "Access is limited to what is required for your service. We recommend changing your password after.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        <line x1="8" y1="9" x2="16" y2="9" />
+        <line x1="8" y1="13" x2="13" y2="13" />
+      </svg>
+    ),
+    title: "Progress Updates",
+    description:
+      "Receive regular updates throughout your order so you can track your account's progress.",
+  },
+];
+
 export default function SkillingBanner() {
-  const [selectedPreset, setSelectedPreset] = useState("main");
-  const [osrsName, setOsrsName] = useState("");
   const [selectedSkillId, setSelectedSkillId] = useState("strength");
   const [currentLevel, setCurrentLevel] = useState(1);
   const [desiredLevel, setDesiredLevel] = useState(10);
@@ -84,13 +163,24 @@ export default function SkillingBanner() {
 
   return (
     <section className="relative overflow-hidden bg-[#03060a] pt-12 pb-24 font-[family-name:var(--font-inter)] text-white sm:pt-14 sm:pb-32">
-      {/* 1. Theme Background Artwork */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-55"
-        style={{ backgroundImage: "url('/assets/SELL-OSRS-GOLD.png')" }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#020609_0%,rgba(3,6,10,0.5)_20%,rgba(3,6,10,0.85)_70%,#03060a_100%)]" />
-      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 size-[650px] rounded-full bg-[#d6a43a]/10 blur-[130px]" />
+      {/* 1. Theme Background Artwork (skilling-1.jpg) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[640px] sm:h-[720px] md:h-[820px] overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center sm:bg-top bg-no-repeat opacity-100"
+          style={{ backgroundImage: "url('/assets/skilling-1.jpg')" }}
+        />
+        {/* Very light darkening to keep contrast without obscuring the village art */}
+        <div className="absolute inset-0 bg-[#03060a]/15" />
+        {/* Soft Navbar blend */}
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#03060a]/80 to-transparent" />
+        {/* Subtle vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_95%_80%_at_50%_30%,transparent_55%,rgba(3,6,10,0.4)_100%)]" />
+        {/* Smooth bottom fade into skilling controls */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#03060a] via-[#03060a]/60 to-transparent" />
+      </div>
+
+      {/* Decorative Golden Light Beam */}
+      <div className="pointer-events-none absolute top-0 left-1/2 h-[340px] w-[920px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(214,164,58,0.2),transparent_70%)] blur-3xl" />
 
       <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
         {/* Page Main Header */}
@@ -116,93 +206,35 @@ export default function SkillingBanner() {
           </p>
         </div>
 
-        {/* 4-Step Process Tutorial Section (From User Request & Client Reference) */}
-        <div className="mb-10 rounded-2xl border border-[#261f18] bg-[#0a0d14]/90 p-5 sm:p-6 shadow-[0_12px_32px_rgba(0,0,0,0.7)] backdrop-blur-md">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-            {SKILLING_STEPS.map((step, idx) => (
-              <div
-                key={step.step}
-                className="relative flex items-center gap-3.5 rounded-xl border border-[#1e2532] bg-[#0f1420]/80 p-4 transition-all hover:border-[#d6a43a]/50"
-              >
-                {/* Step badge with Gem */}
-                <div className="relative flex size-10 shrink-0 items-center justify-center rounded-lg bg-[linear-gradient(135deg,#d49320,#8c590b)] text-white shadow-md">
-                  <Gem className="size-5" />
-                  <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-[#ffda5d] text-[10px] font-black text-[#1a1205]">
-                    {step.step}
-                  </span>
-                </div>
-
-                {/* Step Text */}
-                <p className="text-xs sm:text-[13px] font-semibold leading-snug text-[#cbd6dc]">
-                  {step.title}
-                </p>
-
-                {/* Arrow connecting next step (on lg) */}
-                {idx < 3 && (
-                  <ArrowRight className="pointer-events-none hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 size-4 text-[#d6a43a]/60 z-10" />
-                )}
+        {/* Trust & Guarantee Cards matching Screenshot */}
+        <div className="mb-10 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 sm:mb-12">
+          {SKILLING_FEATURES.map((feature) => (
+            <div
+              key={feature.title}
+              className="flex items-center gap-3.5 rounded-xl border border-[#f5ba42]/50 bg-[#090f17]/90 p-4 sm:p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.65)] backdrop-blur-md transition-all duration-300 hover:border-[#f5ba42] hover:bg-[#0e1624] hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(245,186,66,0.2)]"
+            >
+              {/* Circular Gold Outline Icon Badge */}
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#f5ba42]/40 bg-[#141d2b]/60 shadow-[0_0_12px_rgba(245,186,66,0.12)]">
+                {feature.icon}
               </div>
-            ))}
-          </div>
+
+              {/* Text Info */}
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[14px] sm:text-[15px] font-bold leading-snug text-[#f5ba42]">
+                  {feature.title}
+                </h3>
+                <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#94a3b8]">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* STEP 1: ACCOUNT PRESET & OSRS NAME */}
+        {/* STEP 1: SELECT DESIRED SKILL TO BOOST */}
         <div className="mb-10 sm:mb-12">
           <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-4 flex items-center gap-2">
-            <span className="text-[#d6a43a]">1.</span> ENTER YOUR OSRS NAME TO OBTAIN YOUR SKILLS FROM THE HISCORES
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
-            {ACCOUNT_PRESETS.map((preset) => {
-              const isSelected = selectedPreset === preset.id;
-              return (
-                <button
-                  key={preset.id}
-                  type="button"
-                  onClick={() => setSelectedPreset(preset.id)}
-                  className={`group relative flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
-                    isSelected
-                      ? "border-[#d6a43a] bg-[#161309]/90 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
-                      : "border-[#1e2633] bg-[#090d14]/85 hover:border-[#d6a43a]/50 hover:bg-[#0f1420]"
-                  }`}
-                >
-                  {/* Custom Radio Circle */}
-                  <div
-                    className={`flex size-5 shrink-0 items-center justify-center rounded-full border transition-all ${
-                      isSelected
-                        ? "border-[#d6a43a] bg-[#d6a43a]"
-                        : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
-                    }`}
-                  >
-                    {isSelected && <div className="size-2 rounded-full bg-[#03060a]" />}
-                  </div>
-
-                  {/* Preset Badge Icon */}
-                  <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[#1a2333]/70 text-[#ffda5d]">
-                    {preset.id === "main" && <Shield className="size-4 text-[#ffd700]" />}
-                    {preset.id === "zerker" && <Swords className="size-4 text-[#e5a93c]" />}
-                    {preset.id === "pure" && <Zap className="size-4 text-[#00e676]" />}
-                  </div>
-
-                  {/* Preset Text */}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-extrabold tracking-wide text-white">
-                      {preset.name}
-                    </div>
-                    <div className="text-xs text-[#8e9ca7] font-medium truncate">
-                      {preset.subtitle}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* STEP 2: SELECT DESIRED SKILL TO BOOST */}
-        <div className="mb-10 sm:mb-12">
-          <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-4 flex items-center gap-2">
-            <span className="text-[#d6a43a]">2.</span> SELECT DESIRED SKILL TO BOOST
+            <span className="text-[#d6a43a]">1.</span> SELECT DESIRED SKILL TO BOOST
           </h2>
 
           {/* Grid matching screenshot: 8 on top, 8 on middle, 6 on bottom row */}
@@ -248,10 +280,10 @@ export default function SkillingBanner() {
           </div>
         </div>
 
-        {/* STEP 3: ENTER YOUR DESIRED LEVELS */}
+        {/* STEP 2: ENTER YOUR DESIRED LEVELS */}
         <div>
           <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-4 flex items-center gap-2">
-            <span className="text-[#d6a43a]">3.</span> ENTER YOUR DESIRED LEVELS
+            <span className="text-[#d6a43a]">2.</span> ENTER YOUR DESIRED LEVELS
           </h2>
 
           {/* Configuration Bottom Card matching screenshot */}

@@ -4,8 +4,9 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Gem,
-  ArrowRight,
+  Swords,
+  Crown,
+  Lock,
   ChevronDown,
   ShoppingCart,
   Check,
@@ -15,9 +16,51 @@ import {
   MessageSquare,
   Shield,
 } from "lucide-react";
-import { FIRE_CAPE_STEPS, FIRE_CAPE_SERVICES } from "../constants";
+import { FIRE_CAPE_SERVICES } from "../constants";
 import { CapeServiceItem } from "../types";
 import { useCartStore } from "@/store/cart.store";
+
+const FIRE_CAPE_FEATURES = [
+  {
+    icon: <Swords className="size-5 text-[#f5ba42] drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]" />,
+    title: "Fire Cape Specialists",
+    description:
+      "Our expert OsRS runners, developed by experienced PvP players, complete 100% of Fire Caves for you. Jad and all account builds are supported",
+  },
+  {
+    icon: <Crown className="size-5 text-[#f5ba42] drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]" />,
+    title: "Completed Manually",
+    description:
+      "The entire Fight Caves run is played manually by highly trained experienced software.",
+  },
+  {
+    icon: <Lock className="size-5 text-[#f5ba42] drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]" />,
+    title: "Limited Account Access",
+    description:
+      "We only need your login details when required to complete your order. Temporary password recommended.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        <circle cx="9" cy="11" r="1" fill="#f5ba42" />
+        <circle cx="12" cy="11" r="1" fill="#f5ba42" />
+        <circle cx="15" cy="11" r="1" fill="#f5ba42" />
+      </svg>
+    ),
+    title: "Order Updates",
+    description:
+      "Our team keeps you informed from the start of your service until your Fire Cape is complete",
+  },
+];
 
 const CATEGORIES = [
   { id: "all", label: "All" },
@@ -81,13 +124,24 @@ export default function FireCapesBanner() {
 
   return (
     <section className="relative overflow-hidden bg-[#03060a] pt-12 pb-24 font-[family-name:var(--font-inter)] text-white sm:pt-14 sm:pb-32">
-      {/* 1. Theme Background Artwork */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
-        style={{ backgroundImage: "url('/assets/SELL-OSRS-GOLD.png')" }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#020609_0%,rgba(3,6,10,0.5)_20%,rgba(3,6,10,0.85)_70%,#03060a_100%)]" />
-      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 size-[650px] rounded-full bg-[#ff5722]/15 blur-[140px]" />
+      {/* 1. Theme Background Artwork (fire-caps-image.png) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[640px] sm:h-[720px] md:h-[820px] overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center sm:bg-top bg-no-repeat opacity-100"
+          style={{ backgroundImage: "url('/assets/fire-caps-image.png')" }}
+        />
+        {/* Very light darkening to keep contrast without obscuring the TzTok-Jad art */}
+        <div className="absolute inset-0 bg-[#03060a]/15" />
+        {/* Soft Navbar blend */}
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#03060a]/80 to-transparent" />
+        {/* Subtle vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_95%_80%_at_50%_30%,transparent_55%,rgba(3,6,10,0.4)_100%)]" />
+        {/* Smooth bottom fade into fire cape services */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#03060a] via-[#03060a]/60 to-transparent" />
+      </div>
+
+      {/* Decorative Fiery Golden Light Beam */}
+      <div className="pointer-events-none absolute top-0 left-1/2 h-[340px] w-[920px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(255,87,34,0.18),transparent_70%)] blur-3xl" />
 
       <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6">
         {/* Page Main Header */}
@@ -113,34 +167,29 @@ export default function FireCapesBanner() {
           </p>
         </div>
 
-        {/* 4-Step Process Tutorial Section (From User Request) */}
-        <div className="mb-10 rounded-2xl border border-[#261f18] bg-[#0a0d14]/90 p-5 sm:p-6 shadow-[0_12px_32px_rgba(0,0,0,0.7)] backdrop-blur-md">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-            {FIRE_CAPE_STEPS.map((step, idx) => (
-              <div
-                key={step.step}
-                className="relative flex items-center gap-3.5 rounded-xl border border-[#1e2532] bg-[#0f1420]/80 p-4 transition-all hover:border-[#d6a43a]/50"
-              >
-                {/* Step badge with Gem */}
-                <div className="relative flex size-10 shrink-0 items-center justify-center rounded-lg bg-[linear-gradient(135deg,#d49320,#8c590b)] text-white shadow-md">
-                  <Gem className="size-5" />
-                  <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-[#ffda5d] text-[10px] font-black text-[#1a1205]">
-                    {step.step}
-                  </span>
-                </div>
-
-                {/* Step Text */}
-                <p className="text-xs sm:text-[13px] font-semibold leading-snug text-[#cbd6dc]">
-                  {step.title}
-                </p>
-
-                {/* Arrow connecting next step (on lg) */}
-                {idx < 3 && (
-                  <ArrowRight className="pointer-events-none hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 size-4 text-[#d6a43a]/60 z-10" />
-                )}
+        {/* Trust & Guarantee Cards matching Screenshot */}
+        <div className="mb-10 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 sm:mb-12">
+          {FIRE_CAPE_FEATURES.map((feature) => (
+            <div
+              key={feature.title}
+              className="flex items-center gap-3.5 rounded-xl border border-[#f5ba42]/50 bg-[#090f17]/90 p-4 sm:p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.65)] backdrop-blur-md transition-all duration-300 hover:border-[#f5ba42] hover:bg-[#0e1624] hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(245,186,66,0.2)]"
+            >
+              {/* Circular Gold Outline Icon Badge */}
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#f5ba42]/40 bg-[#141d2b]/60 shadow-[0_0_12px_rgba(245,186,66,0.12)]">
+                {feature.icon}
               </div>
-            ))}
-          </div>
+
+              {/* Text Info */}
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[14px] sm:text-[15px] font-bold leading-snug text-[#f5ba42]">
+                  {feature.title}
+                </h3>
+                <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#94a3b8]">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Top Control Bar: Category Tabs & Search Box (Matching Screenshot) */}

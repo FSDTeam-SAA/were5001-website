@@ -3,13 +3,97 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, ShoppingCart, Check, X, Shield, Sparkles, Gem, ArrowRight } from "lucide-react";
+import { Search, ShoppingCart, Check, X, Shield, Sparkles, ArrowRight } from "lucide-react";
 import questsData from "../data.json";
 import { QuestItem } from "../types";
-import { QUEST_STEPS } from "../constants";
 import { useCartStore } from "@/store/cart.store";
 
 const CATEGORIES = ["All", "Free to Play", "Members", "Miniquests"] as const;
+
+const QUESTING_FEATURES = [
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    title: "Experienced Questers",
+    description:
+      "Your quests are completed by players familiar with OSRS quest requirements, puzzles, bosses & routes.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="M12 2.5v19.5" />
+      </svg>
+    ),
+    title: "100% Manual Questing",
+    description:
+      "Every quest is completed manually. No bots, macros, or automated scripts.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="8" y1="13" x2="16" y2="13" />
+        <line x1="8" y1="17" x2="16" y2="17" />
+        <line x1="8" y1="9" x2="10" y2="9" />
+      </svg>
+    ),
+    title: "Requirements Checked",
+    description:
+      "We check the selected quest requirements before starting and confirm if anything is needed.",
+  },
+  {
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#f5ba42"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-5 drop-shadow-[0_0_6px_rgba(245,186,66,0.35)]"
+      >
+        <line x1="6" y1="19" x2="6" y2="14" />
+        <line x1="12" y1="19" x2="12" y2="9" />
+        <line x1="18" y1="19" x2="18" y2="4" />
+      </svg>
+    ),
+    title: "Progress Updates",
+    description:
+      "Track the progress of your quest order and receive confirmation when all quests are done.",
+  },
+];
 
 export default function QuestingBanner() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -49,13 +133,24 @@ export default function QuestingBanner() {
 
   return (
     <section className="relative overflow-hidden bg-[#03060a] pt-12 pb-24 font-[family-name:var(--font-inter)] text-white sm:pt-14 sm:pb-32">
-      {/* 1. Theme Background Artwork */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
-        style={{ backgroundImage: "url('/assets/SELL-OSRS-GOLD.png')" }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#020609_0%,rgba(3,6,10,0.5)_20%,rgba(3,6,10,0.85)_70%,#03060a_100%)]" />
-      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 size-[650px] rounded-full bg-[#d6a43a]/10 blur-[130px]" />
+      {/* 1. Theme Background Artwork (skilling-1.jpg) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[640px] sm:h-[720px] md:h-[820px] overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center sm:bg-top bg-no-repeat opacity-100"
+          style={{ backgroundImage: "url('/assets/skilling-1.jpg')" }}
+        />
+        {/* Very light darkening to keep contrast without obscuring the village art */}
+        <div className="absolute inset-0 bg-[#03060a]/15" />
+        {/* Soft Navbar blend */}
+        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#03060a]/80 to-transparent" />
+        {/* Subtle vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_95%_80%_at_50%_30%,transparent_55%,rgba(3,6,10,0.4)_100%)]" />
+        {/* Smooth bottom fade into questing content */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#03060a] via-[#03060a]/60 to-transparent" />
+      </div>
+
+      {/* Decorative Golden Light Beam */}
+      <div className="pointer-events-none absolute top-0 left-1/2 h-[340px] w-[920px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(214,164,58,0.2),transparent_70%)] blur-3xl" />
 
       <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6">
         {/* Page Main Header */}
@@ -81,34 +176,29 @@ export default function QuestingBanner() {
           </p>
         </div>
 
-        {/* 4-Step Process Tutorial Section (From User Request & Client Reference) */}
-        <div className="mb-10 rounded-2xl border border-[#261f18] bg-[#0a0d14]/90 p-5 sm:p-6 shadow-[0_12px_32px_rgba(0,0,0,0.7)] backdrop-blur-md">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-            {QUEST_STEPS.map((step, idx) => (
-              <div
-                key={step.step}
-                className="relative flex items-center gap-3.5 rounded-xl border border-[#1e2532] bg-[#0f1420]/80 p-4 transition-all hover:border-[#d6a43a]/50"
-              >
-                {/* Step badge with Gem */}
-                <div className="relative flex size-10 shrink-0 items-center justify-center rounded-lg bg-[linear-gradient(135deg,#d49320,#8c590b)] text-white shadow-md">
-                  <Gem className="size-5" />
-                  <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-[#ffda5d] text-[10px] font-black text-[#1a1205]">
-                    {step.step}
-                  </span>
-                </div>
-
-                {/* Step Text */}
-                <p className="text-xs sm:text-[13px] font-semibold leading-snug text-[#cbd6dc]">
-                  {step.title}
-                </p>
-
-                {/* Arrow connecting next step (on lg) */}
-                {idx < 3 && (
-                  <ArrowRight className="pointer-events-none hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 size-4 text-[#d6a43a]/60 z-10" />
-                )}
+        {/* Trust & Guarantee Cards matching Screenshot */}
+        <div className="mb-10 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 sm:mb-12">
+          {QUESTING_FEATURES.map((feature) => (
+            <div
+              key={feature.title}
+              className="flex items-center gap-3.5 rounded-xl border border-[#f5ba42]/50 bg-[#090f17]/90 p-4 sm:p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.65)] backdrop-blur-md transition-all duration-300 hover:border-[#f5ba42] hover:bg-[#0e1624] hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(245,186,66,0.2)]"
+            >
+              {/* Circular Gold Outline Icon Badge */}
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#f5ba42]/40 bg-[#141d2b]/60 shadow-[0_0_12px_rgba(245,186,66,0.12)]">
+                {feature.icon}
               </div>
-            ))}
-          </div>
+
+              {/* Text Info */}
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[14px] sm:text-[15px] font-bold leading-snug text-[#f5ba42]">
+                  {feature.title}
+                </h3>
+                <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-[#94a3b8]">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Top Control Bar: Category Tabs & Search Box (Matching Screenshot) */}
