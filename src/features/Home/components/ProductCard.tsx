@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ChessQueen } from "lucide-react";
 import { useState } from "react";
+import CheckoutModal from "@/components/CheckoutModal";
 
 type Variant = "osrs" | "rs3";
 
@@ -49,6 +50,17 @@ export default function ProductCard({ variant }: { variant: Variant }) {
   const { game, pricePerM, panel, logo, logoWidth, logoHeight } = PRODUCTS[variant];
   const [millions, setMillions] = useState("0");
   const [dollars, setDollars] = useState("0.00");
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
+  const handleBuyNow = () => {
+    let m = parseFloat(millions) || 0;
+    if (m <= 0) {
+      m = 100;
+      setMillions("100");
+      setDollars((100 * pricePerM).toFixed(2));
+    }
+    setCheckoutOpen(true);
+  };
 
   const onMillions = (raw: string) => {
     const v = sanitize(raw);
@@ -64,6 +76,7 @@ export default function ProductCard({ variant }: { variant: Variant }) {
   };
 
   return (
+    <>
     <article
       aria-label={`Buy ${game} Gold`}
       className="@container group relative aspect-square w-[420px] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-12px_rgba(0,0,0,.9),0_0_0_1px_rgba(214,164,58,.18)] transition-shadow duration-300 hover:shadow-[0_26px_50px_-12px_rgba(0,0,0,.95),0_0_0_1px_rgba(214,164,58,.45),0_0_34px_-6px_rgba(214,164,58,.35)] max-[1100px]:w-[min(46vw,420px)] max-[640px]:w-[min(88vw,360px)]"
@@ -148,6 +161,7 @@ export default function ProductCard({ variant }: { variant: Variant }) {
         type="button"
         id={`${variant}-buy-now`}
         aria-label={`Buy ${game} Gold`}
+        onClick={handleBuyNow}
         className="group/btn absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97]"
       >
         <ChessQueen
@@ -161,5 +175,18 @@ export default function ProductCard({ variant }: { variant: Variant }) {
         FAST <span className="text-[#d6a43a]">·</span> SAFE <span className="text-[#d6a43a]">·</span> RELIABLE
       </p>
     </article>
+
+    <CheckoutModal
+      isOpen={checkoutOpen}
+      onClose={() => setCheckoutOpen(false)}
+      orderInfo={{
+        game: variant === "osrs" ? "OSRS" : "RS3",
+        title: `${game} Gold`,
+        amountM: parseFloat(millions) || 100,
+        price: Math.max(0.01, parseFloat(dollars) || (100 * pricePerM)),
+        productType: variant === "osrs" ? "gold_osrs" : "gold_rs3",
+      }}
+    />
+    </>
   );
 }

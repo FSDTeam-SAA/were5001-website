@@ -12,7 +12,13 @@ import {
   Crown,
   Check,
   User,
+  Loader2,
+  AlertCircle,
+  MessageSquare,
+  X,
+  Mail,
 } from "lucide-react";
+import { paymentService } from "@/services/payment.service";
 
 // Standard competitive RS3 rate matching the platform
 const RATE_PER_M = 0.027;
@@ -30,10 +36,16 @@ export type PaymentMethod = {
 
 export default function BuyRs3Banner() {
   const [rsn, setRsn] = useState("");
+  const [email, setEmail] = useState("");
   const [amount, setAmount] = useState<number>(DEFAULT_AMOUNT);
-  const [selectedPayment, setSelectedPayment] = useState<string>("crypto");
+  const [selectedPayment, setSelectedPayment] = useState<string>("paypal");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [orderSubmitted, setOrderSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{
+    type: "error" | "info" | "success";
+    text: string;
+  } | null>(null);
+  const [livechatModalOpen, setLivechatModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const total = (amount * RATE_PER_M).toFixed(2);
@@ -59,11 +71,95 @@ export default function BuyRs3Banner() {
     }
   };
 
-  const handleBuyOrder = () => {
-    setOrderSubmitted(true);
-    setTimeout(() => {
-      setOrderSubmitted(false);
-    }, 4500);
+  const handleBuyOrder = async () => {
+    setStatusMessage(null);
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
+      setStatusMessage({
+        type: "error",
+        text: "Please enter a valid email address to receive order details and receipt.",
+      });
+      return;
+    }
+
+    if (amount <= 0) {
+      setStatusMessage({
+        type: "error",
+        text: "Please specify a valid amount of RS3 gold to purchase.",
+      });
+      return;
+    }
+
+    const priceNum = parseFloat(total);
+
+    if (selectedPayment === "paypal") {
+      setIsLoading(true);
+      try {
+        const result = await paymentService.createPayPalOrder({
+          amount: priceNum,
+          currency: "USD",
+          customerEmail: trimmedEmail,
+          productType: "gold_rs3",
+          productDetails: {
+            game: "RS3",
+            quantityM: amount,
+            gameCharacterName: rsn.trim() || undefined,
+          },
+        });
+        if (result.data?.approveUrl) {
+          window.location.href = result.data.approveUrl;
+        } else {
+          throw new Error("No PayPal approval link received from server.");
+        }
+      } catch (err: any) {
+        setIsLoading(false);
+        const msg =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Failed to initiate PayPal checkout. Please check server connection.";
+        setStatusMessage({
+          type: "error",
+          text: typeof msg === "string" ? msg : JSON.stringify(msg),
+        });
+      }
+    } else if (selectedPayment === "skrill") {
+      setIsLoading(true);
+      try {
+        const result = await paymentService.createSkrillPayment({
+          amount: priceNum,
+          currency: "USD",
+          customerEmail: trimmedEmail,
+          productType: "gold_rs3",
+          productDetails: {
+            game: "RS3",
+            quantityM: amount,
+            gameCharacterName: rsn.trim() || undefined,
+          },
+        });
+        if (result.data?.checkoutUrl && result.data?.formFields) {
+          paymentService.executeSkrillRedirect(
+            result.data.checkoutUrl,
+            result.data.formFields
+          );
+        } else {
+          throw new Error("Failed to initialize Skrill payment session.");
+        }
+      } catch (err: any) {
+        setIsLoading(false);
+        const msg =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Failed to initiate Skrill checkout. Please check server connection.";
+        setStatusMessage({
+          type: "error",
+          text: typeof msg === "string" ? msg : JSON.stringify(msg),
+        });
+      }
+    } else {
+      // Manual payment method chosen
+      setLivechatModalOpen(true);
+    }
   };
 
   const paymentMethods: PaymentMethod[] = [
@@ -310,26 +406,53 @@ export default function BuyRs3Banner() {
               </div>
             </div>
 
-            {/* RSN Field */}
-            <div className="mt-6">
-              <label
-                htmlFor="buy-rs3-rsn-input"
-                className="block text-sm font-bold tracking-wide text-[#ffda5d]"
-              >
-                RSN (RuneScape Character Name)
-              </label>
-              <div className="mt-2 flex h-13 items-center rounded-xl border border-[#312517] bg-[#070a0e] px-4 shadow-inner transition-colors focus-within:border-[#d6a43a] focus-within:ring-2 focus-within:ring-[#d6a43a]/25">
-                <div className="grid size-6 shrink-0 place-items-center pr-1 text-[#ffd75a]">
-                  <User className="size-5" />
+            {/* RSN & Email Fields */}
+            <div className="mt-6 grid grid-cols-2 gap-5 max-[680px]:grid-cols-1">
+              {/* RSN Field */}
+              <div>
+                <label
+                  htmlFor="buy-rs3-rsn-input"
+                  className="block text-sm font-bold tracking-wide text-[#ffda5d]"
+                >
+                  RSN (RuneScape Character Name)
+                </label>
+                <div className="mt-2 flex h-13 items-center rounded-xl border border-[#312517] bg-[#070a0e] px-4 shadow-inner transition-colors focus-within:border-[#d6a43a] focus-within:ring-2 focus-within:ring-[#d6a43a]/25">
+                  <div className="grid size-6 shrink-0 place-items-center pr-1 text-[#ffd75a]">
+                    <User className="size-5" />
+                  </div>
+                  <input
+                    id="buy-rs3-rsn-input"
+                    type="text"
+                    value={rsn}
+                    onChange={(e) => setRsn(e.target.value)}
+                    placeholder="Enter your RuneScape name"
+                    className="w-full min-w-0 bg-transparent pl-2 text-base font-medium text-white placeholder-[#505a64] outline-none sm:text-lg"
+                  />
                 </div>
-                <input
-                  id="buy-rs3-rsn-input"
-                  type="text"
-                  value={rsn}
-                  onChange={(e) => setRsn(e.target.value)}
-                  placeholder="Enter your RuneScape name"
-                  className="w-full min-w-0 bg-transparent pl-2 text-base font-medium text-white placeholder-[#505a64] outline-none sm:text-lg"
-                />
+              </div>
+
+              {/* Email Field */}
+              <div>
+                <label
+                  htmlFor="buy-rs3-email-input"
+                  className="block text-sm font-bold tracking-wide text-[#ffda5d]"
+                >
+                  Customer Email <span className="text-amber-400">*</span>
+                </label>
+                <div className="mt-2 flex h-13 items-center rounded-xl border border-[#312517] bg-[#070a0e] px-4 shadow-inner transition-colors focus-within:border-[#d6a43a] focus-within:ring-2 focus-within:ring-[#d6a43a]/25">
+                  <div className="grid size-6 shrink-0 place-items-center pr-1 text-[#ffd75a]">
+                    <Mail className="size-5" />
+                  </div>
+                  <input
+                    id="buy-rs3-email-input"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="e.g. your-email@gmail.com"
+                    className="w-full min-w-0 bg-transparent pl-2 text-base font-medium text-white placeholder-[#505a64] outline-none sm:text-lg"
+                  />
+                </div>
               </div>
             </div>
 
@@ -523,9 +646,10 @@ export default function BuyRs3Banner() {
           <button
             type="button"
             onClick={handleBuyOrder}
+            disabled={isLoading}
             id="buy-rs3-submit-btn"
             aria-label="Buy RS3 Gold Now"
-            className="group relative aspect-[204/63] w-[340px] cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-contain bg-center bg-no-repeat transition-transform duration-200 active:scale-[0.97] hover:scale-[1.03] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')] drop-shadow-[0_12px_32px_rgba(214,164,58,0.55)] hover:drop-shadow-[0_16px_44px_rgba(214,164,58,0.85)] max-[640px]:w-[280px]"
+            className="group relative aspect-[204/63] w-[340px] cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-contain bg-center bg-no-repeat transition-transform duration-200 active:scale-[0.97] hover:scale-[1.03] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')] drop-shadow-[0_12px_32px_rgba(214,164,58,0.55)] hover:drop-shadow-[0_16px_44px_rgba(214,164,58,0.85)] disabled:opacity-60 disabled:cursor-not-allowed max-[640px]:w-[280px]"
           >
             <ChessQueen
               className="pointer-events-none absolute left-[18%] top-[45%] -translate-y-1/2 h-[27%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)] transition-transform duration-200 group-hover:scale-110"
@@ -533,17 +657,79 @@ export default function BuyRs3Banner() {
             />
           </button>
 
+          {/* Loading Indicator */}
+          {isLoading && (
+            <div className="flex items-center gap-2 rounded-lg border border-[#d6a43a]/40 bg-[#16120b] px-4 py-2 text-xs font-semibold text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)] animate-pulse">
+              <Loader2 className="size-4 animate-spin text-[#ffd75a]" />
+              <span>Connecting to Secure Payment Gateway...</span>
+            </div>
+          )}
 
-
-          {orderSubmitted && (
+          {/* Status Feedback Message */}
+          {statusMessage && (
             <div
-              role="status"
-              className="mt-1 rounded-lg border border-emerald-500/40 bg-emerald-950/60 px-4 py-2 text-center text-xs font-semibold text-emerald-300"
+              role="alert"
+              className={`flex max-w-md items-center gap-2.5 rounded-xl border px-4 py-2.5 text-xs font-medium shadow-md ${
+                statusMessage.type === "error"
+                  ? "border-red-500/50 bg-red-950/70 text-red-200"
+                  : "border-emerald-500/50 bg-emerald-950/70 text-emerald-200"
+              }`}
             >
-              ✓ Order initiated! Please join livechat to collect your gold in-game immediately.
+              <AlertCircle className="size-4 shrink-0 text-red-400" />
+              <span>{statusMessage.text}</span>
             </div>
           )}
         </div>
+
+        {/* Manual Payment Method Guidance Modal */}
+        {livechatModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+            <div className="relative w-full max-w-md rounded-2xl border border-[#d6a43a]/60 bg-[#0d1017] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(214,164,58,0.3)] text-white">
+              <button
+                type="button"
+                onClick={() => setLivechatModalOpen(false)}
+                className="absolute top-4 right-4 text-[#8e9ca7] hover:text-white"
+                aria-label="Close"
+              >
+                <X className="size-5" />
+              </button>
+              <div className="flex items-center gap-3 pb-3 border-b border-[#261f14]">
+                <MessageSquare className="size-7 text-[#ffda5d]" />
+                <div>
+                  <h4 className="font-[family-name:var(--font-eb-garamond)] text-2xl font-bold text-[#ffda5d]">
+                    Live Support Checkout
+                  </h4>
+                  <p className="text-xs text-[#8e9ca7]">
+                    Selected Payment: <span className="capitalize font-semibold text-white">{selectedPayment}</span>
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 space-y-3 text-sm text-[#cbd6dc]">
+                <p>
+                  To pay via <strong>{selectedPayment.toUpperCase()}</strong> for <strong>{amount}M RS3 Gold (${total})</strong>, our live agents are standing by to provide the exact direct payment address or tag.
+                </p>
+                <p className="text-xs text-[#8e9ca7]">
+                  Delivery is completed in-game immediately upon payment confirmation (2–20 minutes).
+                </p>
+              </div>
+              <div className="mt-6 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setLivechatModalOpen(false)}
+                  className="flex-1 rounded-xl border border-[#271f14] bg-[#141822] py-2.5 text-xs font-bold text-[#8e9ca7] hover:bg-[#1a202c] hover:text-white"
+                >
+                  Close
+                </button>
+                <a
+                  href="/contact"
+                  className="flex-1 text-center rounded-xl bg-[linear-gradient(180deg,#f3b23e,#c77a10)] py-2.5 text-xs font-black tracking-wider text-[#2a1705] shadow-[0_4px_16px_rgba(214,164,58,0.4)] hover:bg-[linear-gradient(180deg,#ffd46e,#d88b18)]"
+                >
+                  Open LiveChat
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

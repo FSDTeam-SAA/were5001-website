@@ -17,14 +17,21 @@ import {
   CreditCard,
   Coins,
   ShieldCheck,
+  Loader2,
+  AlertCircle,
+  X,
+  Mail,
+  User,
 } from "lucide-react";
 import { useCartStore } from "@/store/cart.store";
+import { paymentService } from "@/services/payment.service";
 
 const PAYMENT_OPTIONS = [
+  { id: "paypal", name: "PayPal", badge: "PP", badgeColor: "#003087" },
+  { id: "skrill", name: "Skrill", badge: "SKRILL", badgeColor: "#811345" },
   { id: "visa", name: "Visa", badge: "VISA", badgeColor: "#00579f" },
   { id: "mastercard", name: "Mastercard", badge: "MC", badgeColor: "#eb001b" },
   { id: "crypto", name: "Crypto", badge: "USDT", badgeColor: "#26a17b" },
-  { id: "paypal", name: "PayPal", badge: "PP", badgeColor: "#003087" },
   { id: "revolut", name: "Revolut", badge: "REV", badgeColor: "#0075eb" },
 ];
 
@@ -43,6 +50,10 @@ export default function CartBanner() {
 
   const [paymentDropdownOpen, setPaymentDropdownOpen] = useState(false);
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [rsn, setRsn] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const totalItems = getTotalItems();
   const subtotal = getSubtotal();
@@ -50,6 +61,88 @@ export default function CartBanner() {
 
   const currentPaymentOption =
     PAYMENT_OPTIONS.find((p) => p.id === selectedPayment) ?? PAYMENT_OPTIONS[0];
+
+  const handleCheckoutPay = async () => {
+    setCheckoutError(null);
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
+      setCheckoutError("Please enter a valid email address to receive order details.");
+      return;
+    }
+
+    if (items.length === 0 || total <= 0) {
+      setCheckoutError("Your cart is empty.");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      if (selectedPayment === "paypal") {
+        const result = await paymentService.createPayPalOrder({
+          amount: Number(total.toFixed(2)),
+          currency: "USD",
+          customerEmail: trimmedEmail,
+          productType: "item",
+          productDetails: {
+            gameCharacterName: rsn.trim() || undefined,
+            items: items.map((i) => ({
+              id: i.id,
+              name: i.name,
+              price: i.price,
+              quantity: i.quantity,
+              category: i.category,
+            })),
+          },
+        });
+        if (result.data?.approveUrl) {
+          window.location.href = result.data.approveUrl;
+          return;
+        } else {
+          throw new Error("No PayPal approval link received from server.");
+        }
+      } else if (selectedPayment === "skrill") {
+        const result = await paymentService.createSkrillPayment({
+          amount: Number(total.toFixed(2)),
+          currency: "USD",
+          customerEmail: trimmedEmail,
+          productType: "item",
+          productDetails: {
+            gameCharacterName: rsn.trim() || undefined,
+            items: items.map((i) => ({
+              id: i.id,
+              name: i.name,
+              price: i.price,
+              quantity: i.quantity,
+              category: i.category,
+            })),
+          },
+        });
+        if (result.data?.checkoutUrl && result.data?.formFields) {
+          paymentService.executeSkrillRedirect(
+            result.data.checkoutUrl,
+            result.data.formFields
+          );
+          return;
+        } else {
+          throw new Error("Failed to initialize Skrill checkout session.");
+        }
+      } else {
+        setIsProcessing(false);
+        setCheckoutError(
+          `Automated checkout for ${currentPaymentOption.name} is processed manually via 24/7 LiveChat. Please select PayPal or Skrill, or contact live support.`
+        );
+      }
+    } catch (err: any) {
+      setIsProcessing(false);
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Payment initiation failed. Please check server connection.";
+      setCheckoutError(typeof msg === "string" ? msg : JSON.stringify(msg));
+    }
+  };
 
   return (
     <section className="relative overflow-hidden bg-[#03060a] pt-12 pb-24 font-[family-name:var(--font-inter)] text-white sm:pt-14 sm:pb-28">
@@ -347,45 +440,144 @@ export default function CartBanner() {
       {/* Checkout Dialog Modal */}
       {checkoutModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-          <div className="relative w-full max-w-md rounded-2xl border border-[#d6a43a]/60 bg-[#0d1017] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(214,164,58,0.3)]">
+          <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#d6a43a]/60 bg-[#0d1017] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(214,164,58,0.3)] text-white">
+            <button
+              type="button"
+              onClick={() => setCheckoutModalOpen(false)}
+              disabled={isProcessing}
+              className="absolute top-4 right-4 text-[#8e9ca7] hover:text-white disabled:opacity-50"
+              aria-label="Close"
+            >
+              <X className="size-5" />
+            </button>
+
             <div className="flex items-center gap-3 pb-3 border-b border-[#261f14]">
               <ShieldCheck className="size-7 text-[#ffda5d]" />
               <div>
                 <h4 className="font-[family-name:var(--font-eb-garamond)] text-2xl font-bold text-[#ffda5d]">
-                  Checkout Confirmation
+                  Secure Cart Checkout
                 </h4>
-                <p className="text-xs text-[#8e9ca7]">Order Total: ${total.toFixed(2)}</p>
+                <p className="text-xs text-[#8e9ca7]">
+                  Order Total: <strong className="text-[#ffd75a]">${total.toFixed(2)} USD</strong> ({totalItems} items)
+                </p>
               </div>
             </div>
 
-            <div className="mt-4 space-y-3 text-sm text-[#cbd6dc]">
-              <p>
-                You are proceeding to secure checkout with{" "}
-                <span className="font-bold text-[#ffda5d]">{currentPaymentOption.name}</span>.
-              </p>
-              <p className="text-xs text-[#8e9ca7]">
-                Once payment is confirmed, an agent will meet you immediately in-game or via
-                livechat to complete the delivery within 2–20 minutes.
-              </p>
+            <div className="mt-4 space-y-3.5">
+              {/* Email Address */}
+              <div>
+                <label
+                  htmlFor="cart-checkout-email"
+                  className="block text-xs font-bold tracking-wide text-[#ffda5d] uppercase mb-1"
+                >
+                  Customer Email <span className="text-amber-400">*</span>
+                </label>
+                <div className="flex h-11 items-center rounded-xl border border-[#312517] bg-[#070a0e] px-3 shadow-inner focus-within:border-[#d6a43a]">
+                  <Mail className="size-4 text-[#ffd75a] mr-2 shrink-0" />
+                  <input
+                    id="cart-checkout-email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter email for delivery receipt"
+                    className="w-full min-w-0 bg-transparent text-sm font-medium text-white placeholder-[#505a64] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* RSN */}
+              <div>
+                <label
+                  htmlFor="cart-checkout-rsn"
+                  className="block text-xs font-bold tracking-wide text-[#ffda5d] uppercase mb-1"
+                >
+                  RuneScape Character Name (RSN)
+                </label>
+                <div className="flex h-11 items-center rounded-xl border border-[#312517] bg-[#070a0e] px-3 shadow-inner focus-within:border-[#d6a43a]">
+                  <User className="size-4 text-[#ffd75a] mr-2 shrink-0" />
+                  <input
+                    id="cart-checkout-rsn"
+                    type="text"
+                    value={rsn}
+                    onChange={(e) => setRsn(e.target.value)}
+                    placeholder="In-game character name (optional)"
+                    className="w-full min-w-0 bg-transparent text-sm font-medium text-white placeholder-[#505a64] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Selected Gateway info */}
+              <div>
+                <label className="block text-xs font-bold tracking-wide text-[#ffda5d] uppercase mb-1.5">
+                  Payment Gateway
+                </label>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPayment("paypal")}
+                    className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold border transition-all ${
+                      selectedPayment === "paypal"
+                        ? "border-[#d6a43a] bg-[#d6a43a]/20 text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)]"
+                        : "border-[#271f14] bg-[#141822] text-[#8e9ca7] hover:text-white"
+                    }`}
+                  >
+                    <span>PayPal</span>
+                    {selectedPayment === "paypal" && <Check className="size-3.5 text-[#ffd75a]" />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPayment("skrill")}
+                    className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold border transition-all ${
+                      selectedPayment === "skrill"
+                        ? "border-[#d6a43a] bg-[#d6a43a]/20 text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)]"
+                        : "border-[#271f14] bg-[#141822] text-[#8e9ca7] hover:text-white"
+                    }`}
+                  >
+                    <span>Skrill</span>
+                    {selectedPayment === "skrill" && <Check className="size-3.5 text-[#ffd75a]" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Error feedback */}
+              {checkoutError && (
+                <div
+                  role="alert"
+                  className="flex items-start gap-2 rounded-xl border border-red-500/50 bg-red-950/70 p-3 text-xs text-red-200"
+                >
+                  <AlertCircle className="size-4 shrink-0 text-red-400 mt-0.5" />
+                  <span className="flex-1">{checkoutError}</span>
+                </div>
+              )}
             </div>
 
             <div className="mt-6 flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setCheckoutModalOpen(false)}
-                className="flex-1 rounded-xl border border-[#271f14] bg-[#141822] py-2.5 text-xs font-bold text-[#8e9ca7] hover:bg-[#1a202c] hover:text-white"
+                disabled={isProcessing}
+                className="flex-1 rounded-xl border border-[#271f14] bg-[#141822] py-2.5 text-xs font-bold text-[#8e9ca7] hover:bg-[#1a202c] hover:text-white disabled:opacity-50"
               >
                 Back to Cart
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  alert("Order submitted successfully! Please join livechat to finalize your trade.");
-                  setCheckoutModalOpen(false);
-                }}
-                className="flex-1 rounded-xl bg-[linear-gradient(180deg,#f3b23e,#c77a10)] py-2.5 text-xs font-black tracking-wider text-[#2a1705] shadow-[0_4px_16px_rgba(214,164,58,0.4)] hover:bg-[linear-gradient(180deg,#ffd46e,#d88b18)]"
+                onClick={handleCheckoutPay}
+                disabled={isProcessing}
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(180deg,#f3b23e,#c77a10)] py-2.5 text-xs font-black tracking-wider text-[#2a1705] shadow-[0_4px_16px_rgba(214,164,58,0.4)] hover:bg-[linear-gradient(180deg,#ffd46e,#d88b18)] disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Confirm & Pay
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="size-3.5 animate-spin" />
+                    <span>Connecting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="size-3.5" />
+                    <span>Confirm &amp; Pay</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
