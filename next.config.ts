@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "afocirmbqdxnkyescnev.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "secnx.com",
+      },
+    ],
+  },
   async rewrites() {
     const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
     return [

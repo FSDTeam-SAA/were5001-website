@@ -13,6 +13,7 @@ const navLinks = [
   { name: "BUY RS3 GOLD", href: "/buy/rs3" },
   { name: "SELL RS3 GOLD", href: "/sell/rs3" },
   { name: "ITEMS", href: "/items" },
+  // { name: "BLOG", href: "/blog" },
   { name: "CONTACT", href: "/contact" },
 ];
 
@@ -44,19 +45,17 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 font-[family-name:var(--font-inter)] ${
-        isScrolled
+      className={`sticky top-0 z-50 w-full transition-all duration-300 font-[family-name:var(--font-inter)] ${isScrolled
           ? "h-[68px] bg-[#030910]/95 border-b border-[#d6a43a]/35 shadow-[0_12px_32px_rgba(0,0,0,0.85)] backdrop-blur-xl"
           : "h-20 bg-[#050d14]/85 border-b border-[#203140]/60 backdrop-blur-md"
-      }`}
+        }`}
     >
       {/* Subtle bottom hairline highlight */}
       <span
-        className={`pointer-events-none absolute inset-x-0 bottom-0 h-px transition-opacity duration-300 ${
-          isScrolled
+        className={`pointer-events-none absolute inset-x-0 bottom-0 h-px transition-opacity duration-300 ${isScrolled
             ? "bg-[linear-gradient(90deg,transparent,#d6a43a,transparent)] opacity-80"
             : "bg-[linear-gradient(90deg,transparent,#d6a43a/35,transparent)] opacity-50"
-        }`}
+          }`}
       />
 
       <div className="mx-auto flex h-full max-w-[1560px] items-center justify-between px-6 max-[640px]:px-4">
@@ -83,11 +82,10 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative flex h-full items-center transition-colors duration-200 hover:text-white ${
-                  isActive
+                className={`relative flex h-full items-center transition-colors duration-200 hover:text-white ${isActive
                     ? "font-bold text-[#ffdf70] after:absolute after:bottom-0 after:inset-x-0 after:h-[2.5px] after:rounded-t-full after:bg-[linear-gradient(90deg,#ffda5d,#d78b14)] after:shadow-[0_0_10px_rgba(214,164,58,0.5)]"
                     : "hover:text-[#ffdf70]"
-                }`}
+                  }`}
               >
                 {link.name}
               </Link>
@@ -202,11 +200,10 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                    isActive
+                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${isActive
                       ? "bg-[#d6a43a]/15 text-[#ffdf70] font-bold"
                       : "text-[#cbd6dc] hover:bg-[#d6a43a]/10 hover:text-[#ffdf70]"
-                  }`}
+                    }`}
                 >
                   <span>{link.name}</span>
                   <span className="text-xs text-[#d6a43a]">›</span>
@@ -223,9 +220,8 @@ export default function Navbar() {
               >
                 <span>OSRS SERVICES</span>
                 <span
-                  className={`text-xs text-[#d6a43a] transition-transform duration-200 ${
-                    mobileServicesOpen ? "rotate-90" : ""
-                  }`}
+                  className={`text-xs text-[#d6a43a] transition-transform duration-200 ${mobileServicesOpen ? "rotate-90" : ""
+                    }`}
                 >
                   ›
                 </span>
