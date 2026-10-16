@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import {
+  BUILD_OPTIONS,
   WEAPON_OPTIONS,
   LIMITATION_OPTIONS,
   calculateInfernalPrice,
@@ -76,25 +77,28 @@ const INFERNAL_CAPE_FEATURES = [
 ];
 
 export default function InfernalCapesBanner() {
+  const [selectedBuild, setSelectedBuild] = useState<"main" | "zerker" | "pure">("main");
   const [selectedWeapon, setSelectedWeapon] = useState<
     "twisted_bow" | "bow_of_faerdhinen" | "armadyl_crossbow"
-  >("armadyl_crossbow");
+  >("twisted_bow");
   const [noRigour, setNoRigour] = useState(false);
   const [addedToast, setAddedToast] = useState(false);
 
   const addItem = useCartStore((state) => state.addItem);
 
-  const currentPrice = calculateInfernalPrice("main", selectedWeapon, noRigour);
+  const currentPrice = calculateInfernalPrice(selectedBuild, selectedWeapon, noRigour);
 
+  const currentBuildObj =
+    BUILD_OPTIONS.find((b) => b.id === selectedBuild) || BUILD_OPTIONS[0];
   const currentWeaponObj =
-    WEAPON_OPTIONS.find((w) => w.id === selectedWeapon) || WEAPON_OPTIONS[2];
+    WEAPON_OPTIONS.find((w) => w.id === selectedWeapon) || WEAPON_OPTIONS[0];
 
   const handleAddToCart = () => {
     const limitationsLabel = noRigour ? " (No Rigour)" : "";
-    const itemName = `Infernal Cape - ${currentWeaponObj.name}${limitationsLabel}`;
+    const itemName = `Infernal Cape - ${currentBuildObj.name} • ${currentWeaponObj.name}${limitationsLabel}`;
 
     addItem({
-      id: `infernal-${selectedWeapon}-${noRigour ? "no-rigour" : "standard"}`,
+      id: `infernal-${selectedBuild}-${selectedWeapon}-${noRigour ? "no-rigour" : "standard"}`,
       name: itemName,
       price: currentPrice,
       image: currentWeaponObj.image,
@@ -176,113 +180,189 @@ export default function InfernalCapesBanner() {
           ))}
         </div>
 
-        {/* STEP 1: WEAPON TO USE (matching screenshot) */}
-        <div className="mb-8 sm:mb-10">
-          <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-3.5 flex items-center gap-2">
-            <span className="text-[#d6a43a]">1.</span> WEAPON TO USE
-          </h2>
+        {/* 3-COLUMN CONFIGURATION SECTION (Matching Screenshot) */}
+        <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Column 1: Select your Account Build */}
+          <div>
+            <div className="mb-3.5 flex items-center gap-2">
+              <span className="flex size-5.5 items-center justify-center rounded-full bg-white text-[12px] font-black text-[#03060a]">
+                1
+              </span>
+              <h2 className="text-sm font-bold tracking-wide text-white">
+                Select your Account Build
+              </h2>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
-            {WEAPON_OPTIONS.map((weapon) => {
-              const isSelected = selectedWeapon === weapon.id;
-              return (
-                <button
-                  key={weapon.id}
-                  type="button"
-                  onClick={() => setSelectedWeapon(weapon.id)}
-                  className={`group relative flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
-                    isSelected
-                      ? "border-[#d6a43a] bg-[#161309]/90 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
-                      : "border-[#1e2633] bg-[#090d14]/85 hover:border-[#d6a43a]/50 hover:bg-[#0f1420]"
-                  }`}
-                >
-                  {/* Radio Circle */}
-                  <div
-                    className={`flex size-5 shrink-0 items-center justify-center rounded-full border transition-all ${
+            <div className="space-y-3">
+              {BUILD_OPTIONS.map((build) => {
+                const isSelected = selectedBuild === build.id;
+                return (
+                  <button
+                    key={build.id}
+                    type="button"
+                    onClick={() => setSelectedBuild(build.id)}
+                    className={`group relative flex w-full items-center gap-3.5 rounded-xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
                       isSelected
-                        ? "border-[#d6a43a] bg-[#d6a43a]"
-                        : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
+                        ? "border-[#d6a43a] bg-[#161309]/95 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
+                        : "border-[#1e2633] bg-[#0c121c]/90 hover:border-[#d6a43a]/50 hover:bg-[#121a28]"
                     }`}
                   >
-                    {isSelected && <div className="size-2 rounded-full bg-[#03060a]" />}
-                  </div>
-
-                  {/* Weapon Icon */}
-                  <div className="relative flex size-8 shrink-0 items-center justify-center">
-                    <Image
-                      src={weapon.image}
-                      alt={weapon.name}
-                      width={32}
-                      height={32}
-                      className="size-7 object-contain drop-shadow-md"
-                      unoptimized
-                    />
-                  </div>
-
-                  {/* Detail */}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-extrabold tracking-wide text-white">
-                      {weapon.name}
+                    {/* Radio Circle */}
+                    <div
+                      className={`flex size-5 shrink-0 items-center justify-center rounded-full border transition-all ${
+                        isSelected
+                          ? "border-[#d6a43a] bg-[#d6a43a]"
+                          : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
+                      }`}
+                    >
+                      {isSelected && <div className="size-2 rounded-full bg-[#03060a]" />}
                     </div>
-                  </div>
-                </button>
-              );
-            })}
+
+                    {/* Build Helm Icon */}
+                    <div className="relative flex size-8 shrink-0 items-center justify-center">
+                      <Image
+                        src={build.image}
+                        alt={build.name}
+                        width={32}
+                        height={32}
+                        className="size-7 object-contain drop-shadow-md"
+                        unoptimized
+                      />
+                    </div>
+
+                    {/* Build Info */}
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-bold text-white">
+                        {build.name}
+                      </div>
+                      <div className="text-[11px] text-[#8e9ca7]">
+                        {build.subtitle}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        {/* STEP 2: ACCOUNT LIMITATIONS (matching screenshot) */}
-        <div className="mb-10">
-          <h2 className="text-xs sm:text-sm font-black tracking-widest text-[#cbd6dc] uppercase mb-3.5 flex items-center gap-2">
-            <span className="text-[#d6a43a]">2.</span> ACCOUNT LIMITATIONS
-          </h2>
+          {/* Column 2: Weapon to Use */}
+          <div>
+            <div className="mb-3.5 flex items-center gap-2">
+              <span className="flex size-5.5 items-center justify-center rounded-full bg-white text-[12px] font-black text-[#03060a]">
+                2
+              </span>
+              <h2 className="text-sm font-bold tracking-wide text-white">
+                Weapon to Use
+              </h2>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
-            {LIMITATION_OPTIONS.map((lim) => {
-              return (
-                <button
-                  key={lim.id}
-                  type="button"
-                  onClick={() => setNoRigour(!noRigour)}
-                  className={`group relative flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
-                    noRigour
-                      ? "border-[#d6a43a] bg-[#161309]/90 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
-                      : "border-[#1e2633] bg-[#090d14]/85 hover:border-[#d6a43a]/50 hover:bg-[#0f1420]"
-                  }`}
-                >
-                  {/* Checkbox Circle */}
-                  <div
-                    className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-all ${
-                      noRigour
-                        ? "border-[#d6a43a] bg-[#d6a43a]"
-                        : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
+            <div className="space-y-3">
+              {WEAPON_OPTIONS.map((weapon) => {
+                const isSelected = selectedWeapon === weapon.id;
+                return (
+                  <button
+                    key={weapon.id}
+                    type="button"
+                    onClick={() => setSelectedWeapon(weapon.id)}
+                    className={`group relative flex w-full items-center gap-3.5 rounded-xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
+                      isSelected
+                        ? "border-[#d6a43a] bg-[#161309]/95 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
+                        : "border-[#1e2633] bg-[#0c121c]/90 hover:border-[#d6a43a]/50 hover:bg-[#121a28]"
                     }`}
                   >
-                    {noRigour && <Check className="size-3.5 stroke-[3] text-[#03060a]" />}
-                  </div>
-
-                  {/* Limitation Icon */}
-                  <div className="relative flex size-8 shrink-0 items-center justify-center">
-                    <Image
-                      src={lim.image}
-                      alt={lim.name}
-                      width={32}
-                      height={32}
-                      className="size-7 object-contain drop-shadow-md"
-                      unoptimized
-                    />
-                  </div>
-
-                  {/* Detail */}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-extrabold tracking-wide text-white">
-                      {lim.name}
+                    {/* Radio Circle */}
+                    <div
+                      className={`flex size-5 shrink-0 items-center justify-center rounded-full border transition-all ${
+                        isSelected
+                          ? "border-[#d6a43a] bg-[#d6a43a]"
+                          : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
+                      }`}
+                    >
+                      {isSelected && <div className="size-2 rounded-full bg-[#03060a]" />}
                     </div>
-                    <div className="text-[11px] text-[#8e9ca7]">+$10.00 extra fee</div>
-                  </div>
-                </button>
-              );
-            })}
+
+                    {/* Weapon Icon */}
+                    <div className="relative flex size-8 shrink-0 items-center justify-center">
+                      <Image
+                        src={weapon.image}
+                        alt={weapon.name}
+                        width={32}
+                        height={32}
+                        className="size-7 object-contain drop-shadow-md"
+                        unoptimized
+                      />
+                    </div>
+
+                    {/* Detail */}
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-bold text-white">
+                        {weapon.name}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Column 3: Account Limitations */}
+          <div>
+            <div className="mb-3.5 flex items-center gap-2">
+              <span className="flex size-5.5 items-center justify-center rounded-full bg-white text-[12px] font-black text-[#03060a]">
+                3
+              </span>
+              <h2 className="text-sm font-bold tracking-wide text-white">
+                Account Limitations
+              </h2>
+            </div>
+
+            <div className="space-y-3">
+              {LIMITATION_OPTIONS.map((lim) => {
+                return (
+                  <button
+                    key={lim.id}
+                    type="button"
+                    onClick={() => setNoRigour(!noRigour)}
+                    className={`group relative flex w-full items-center gap-3.5 rounded-xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
+                      noRigour
+                        ? "border-[#d6a43a] bg-[#161309]/95 shadow-[0_0_20px_rgba(214,164,58,0.25)] ring-1 ring-[#d6a43a]"
+                        : "border-[#1e2633] bg-[#0c121c]/90 hover:border-[#d6a43a]/50 hover:bg-[#121a28]"
+                    }`}
+                  >
+                    {/* Checkbox Square */}
+                    <div
+                      className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-all ${
+                        noRigour
+                          ? "border-[#d6a43a] bg-[#d6a43a]"
+                          : "border-[#4a5568] bg-[#090d14] group-hover:border-[#d6a43a]/60"
+                      }`}
+                    >
+                      {noRigour && <Check className="size-3.5 stroke-[3] text-[#03060a]" />}
+                    </div>
+
+                    {/* Limitation Icon */}
+                    <div className="relative flex size-8 shrink-0 items-center justify-center">
+                      <Image
+                        src={lim.image}
+                        alt={lim.name}
+                        width={32}
+                        height={32}
+                        className="size-7 object-contain drop-shadow-md"
+                        unoptimized
+                      />
+                    </div>
+
+                    {/* Detail */}
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-bold text-white">
+                        {lim.name}
+                      </div>
+                      <div className="text-[11px] text-[#8e9ca7]">+$10.00 extra fee</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -295,7 +375,7 @@ export default function InfernalCapesBanner() {
                 ${currentPrice.toFixed(2)}
               </div>
               <div className="text-xs text-[#8e9ca7] font-medium mt-1">
-                {currentWeaponObj.name}
+                {currentBuildObj.name} • {currentWeaponObj.name}
                 {noRigour ? " • No Rigour" : ""}
               </div>
             </div>
