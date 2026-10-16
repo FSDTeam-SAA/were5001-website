@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import ScrollObserver from "@/components/shared/ScrollObserver";
-import FAQ from "@/features/Home/components/FAQ";
+import ServiceFAQ from "@/components/shared/ServiceFAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
 import FireCapesBanner from "@/features/FireCapes/components/FireCapesBanner";
 
@@ -19,7 +19,7 @@ export default function FireCapesPage() {
       <Navbar />
       <FireCapesBanner />
       <TrustedByTraders />
-      <FAQ />
+      <ServiceFAQ service="fire-capes" />
       <Footer />
     </main>
   );

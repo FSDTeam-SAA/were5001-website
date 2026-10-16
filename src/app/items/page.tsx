@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import ScrollObserver from "@/components/shared/ScrollObserver";
-import FAQ from "@/features/Home/components/FAQ";
+import ItemsFAQ from "@/features/Items/components/ItemsFAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
 import WhyPlayersBuy from "@/features/Home/components/WhyPlayersBuy";
 import ItemsBanner from "@/features/Items/components/ItemsBanner";
@@ -21,7 +21,7 @@ export default function ItemsPage() {
       <ItemsBanner />
       <WhyPlayersBuy />
       <TrustedByTraders />
-      <FAQ />
+      <ItemsFAQ />
       <Footer />
     </main>
   );

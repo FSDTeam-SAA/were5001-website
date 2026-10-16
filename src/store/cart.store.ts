@@ -38,7 +38,7 @@ const INITIAL_ITEMS: CartItem[] = [
 
 export const useCartStore = create<CartState>((set, get) => ({
   items: INITIAL_ITEMS,
-  selectedPayment: "visa",
+  selectedPayment: "card-pay",
 
   addItem: (item, quantity = 1) => {
     set((state) => {

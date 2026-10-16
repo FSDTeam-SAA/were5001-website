@@ -23,19 +23,31 @@ import {
   Mail,
   User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cart.store";
 import { paymentService } from "@/services/payment.service";
 
 const PAYMENT_OPTIONS = [
-  { id: "paypal", name: "PayPal", badge: "PP", badgeColor: "#003087" },
+  {
+    id: "card-pay",
+    name: "Card Pay (PayPal, Cards, Apple/Google Pay)",
+    badge: "CARD PAY",
+    badgeColor: "#d97706",
+    isCardPay: true,
+  },
   { id: "skrill", name: "Skrill", badge: "SKRILL", badgeColor: "#811345" },
-  { id: "visa", name: "Visa", badge: "VISA", badgeColor: "#00579f" },
-  { id: "mastercard", name: "Mastercard", badge: "MC", badgeColor: "#eb001b" },
   { id: "crypto", name: "Crypto", badge: "USDT", badgeColor: "#26a17b" },
-  { id: "revolut", name: "Revolut", badge: "REV", badgeColor: "#0075eb" },
+  { id: "interac", name: "Interac e-Transfer", badge: "INTERAC", badgeColor: "#d69e2e" },
+  { id: "neteller", name: "Neteller", badge: "NETELLER", badgeColor: "#84cc16" },
+  { id: "paysafecard", name: "paysafecard", badge: "PAYSAFE", badgeColor: "#0284c7" },
+  { id: "blik", name: "BLIK", badge: "BLIK", badgeColor: "#e11d48" },
+  { id: "alipay", name: "Alipay", badge: "ALIPAY", badgeColor: "#0284c7" },
+  { id: "bancontact", name: "Bancontact", badge: "BANCONTACT", badgeColor: "#f59e0b" },
+  { id: "ideal", name: "iDEAL", badge: "IDEAL", badgeColor: "#ec4899" },
 ];
 
 export default function CartBanner() {
+  const router = useRouter();
   const {
     items,
     selectedPayment,
@@ -73,6 +85,14 @@ export default function CartBanner() {
 
     if (items.length === 0 || total <= 0) {
       setCheckoutError("Your cart is empty.");
+      return;
+    }
+
+    // If card-pay is selected, redirect to LiveChat with cart summary details
+    if (selectedPayment === "card-pay") {
+      const itemListNames = items.map((i) => `${i.quantity}x ${i.name}`).join(", ");
+      const chatUrl = `/contact?pay=card pay&item=${encodeURIComponent(itemListNames)}&price=${total.toFixed(2)}`;
+      router.push(chatUrl);
       return;
     }
 
@@ -129,10 +149,10 @@ export default function CartBanner() {
           throw new Error("Failed to initialize Skrill checkout session.");
         }
       } else {
-        setIsProcessing(false);
-        setCheckoutError(
-          `Automated checkout for ${currentPaymentOption.name} is processed manually via 24/7 LiveChat. Please select PayPal or Skrill, or contact live support.`
-        );
+        // Direct any other manual payment to livechat
+        const itemListNames = items.map((i) => `${i.quantity}x ${i.name}`).join(", ");
+        const chatUrl = `/contact?pay=${encodeURIComponent(selectedPayment)}&item=${encodeURIComponent(itemListNames)}&price=${total.toFixed(2)}`;
+        router.push(chatUrl);
       }
     } catch (err: any) {
       setIsProcessing(false);
@@ -387,6 +407,18 @@ export default function CartBanner() {
                       })}
                     </div>
                   )}
+                  {/* Visual preview if card-pay selected */}
+                  {selectedPayment === "card-pay" && (
+                    <div className="mt-2.5 overflow-hidden rounded-xl border border-[#d6a43a]/50 bg-white p-2.5 shadow-[0_4px_16px_rgba(214,164,58,0.25)]">
+                      <Image
+                        src="/assets/footer/card-pay-combined.svg"
+                        alt="Card Pay (PayPal, Credit Card, Debit Card, Apple Pay, Google Pay)"
+                        width={460}
+                        height={90}
+                        className="h-10 w-full object-contain"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -512,31 +544,49 @@ export default function CartBanner() {
                 <label className="block text-xs font-bold tracking-wide text-[#ffda5d] uppercase mb-1.5">
                   Payment Gateway
                 </label>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-2">
                   <button
                     type="button"
-                    onClick={() => setSelectedPayment("paypal")}
-                    className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold border transition-all ${
-                      selectedPayment === "paypal"
+                    onClick={() => setSelectedPayment("card-pay")}
+                    className={`flex items-center justify-between rounded-xl py-2 px-3.5 text-xs font-bold border transition-all ${
+                      selectedPayment === "card-pay"
                         ? "border-[#d6a43a] bg-[#d6a43a]/20 text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)]"
                         : "border-[#271f14] bg-[#141822] text-[#8e9ca7] hover:text-white"
                     }`}
                   >
-                    <span>PayPal</span>
-                    {selectedPayment === "paypal" && <Check className="size-3.5 text-[#ffd75a]" />}
+                    <div className="flex items-center gap-2">
+                      <span className="rounded bg-amber-500/20 text-amber-300 px-2 py-0.5 text-[10px] font-black">CARD PAY</span>
+                      <span>Card Pay (PayPal, Credit/Debit, Apple/Google Pay)</span>
+                    </div>
+                    {selectedPayment === "card-pay" && <Check className="size-3.5 text-[#ffd75a]" />}
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedPayment("skrill")}
-                    className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold border transition-all ${
-                      selectedPayment === "skrill"
-                        ? "border-[#d6a43a] bg-[#d6a43a]/20 text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)]"
-                        : "border-[#271f14] bg-[#141822] text-[#8e9ca7] hover:text-white"
-                    }`}
-                  >
-                    <span>Skrill</span>
-                    {selectedPayment === "skrill" && <Check className="size-3.5 text-[#ffd75a]" />}
-                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPayment("paypal")}
+                      className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold border transition-all ${
+                        selectedPayment === "paypal"
+                          ? "border-[#d6a43a] bg-[#d6a43a]/20 text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)]"
+                          : "border-[#271f14] bg-[#141822] text-[#8e9ca7] hover:text-white"
+                      }`}
+                    >
+                      <span>PayPal</span>
+                      {selectedPayment === "paypal" && <Check className="size-3.5 text-[#ffd75a]" />}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPayment("skrill")}
+                      className={`flex-1 flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs font-bold border transition-all ${
+                        selectedPayment === "skrill"
+                          ? "border-[#d6a43a] bg-[#d6a43a]/20 text-[#ffda5d] shadow-[0_0_12px_rgba(214,164,58,0.3)]"
+                          : "border-[#271f14] bg-[#141822] text-[#8e9ca7] hover:text-white"
+                      }`}
+                    >
+                      <span>Skrill</span>
+                      {selectedPayment === "skrill" && <Check className="size-3.5 text-[#ffd75a]" />}
+                    </button>
+                  </div>
                 </div>
               </div>
 

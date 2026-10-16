@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 130" width="1000" height="130">
+  <defs>
+    <linearGradient id="bgGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Rounded Container -->
+  <rect width="100%" height="100%" rx="16" fill="url(#bgGlow)"/>
+
+  <!-- Brand Section 1: PayPal -->
+  <g transform="translate(30, 32)">
+    <path fill="#003087" d="M13 0h24c10.5 0 17.5 5.5 15.8 16.5-1.9 12-10.8 19-21.8 19H22l-4.8 30.5H4L13 0z"/>
+    <path fill="#0079C1" d="M22 35.5h9.5c11 0 19.9-7 21.8-19 1.7-11-5.3-16.5-15.8-16.5H13L4 66h13.2l4.8-30.5z" opacity="0.12"/>
+    <path fill="#0079C1" d="M23 20h16.5c7 0 12 3.8 10.8 11.2-1.3 8.3-7.4 13-15 13h-6.6l-3.3 21H16l7-45.2z"/>
+    <text x="65" y="47" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="38" font-weight="900" font-style="italic" fill="#003087">Pay<tspan fill="#0079C1">Pal</tspan></text>
+  </g>
+
+  <!-- Divider 1 -->
+  <line x1="240" y1="20" x2="240" y2="110" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Brand Section 2: Visa -->
+  <g transform="translate(265, 42)">
+    <text x="0" y="46" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="46" font-weight="900" font-style="italic" fill="#1434CB" letter-spacing="-1.5">VISA</text>
+  </g>
+
+  <!-- Divider 2 -->
+  <line x1="395" y1="20" x2="395" y2="110" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Brand Section 3: Mastercard -->
+  <g transform="translate(425, 32)">
+    <circle cx="32" cy="33" r="32" fill="#EB001B"/>
+    <circle cx="70" cy="33" r="32" fill="#F79E1B" fill-opacity="0.95"/>
+    <path d="M51 12.2a31.9 31.9 0 0 1 0 41.6 31.9 31.9 0 0 1 0-41.6z" fill="#FF5F00"/>
+  </g>
+
+  <!-- Divider 3 -->
+  <line x1="550" y1="20" x2="550" y2="110" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Brand Section 4: Apple Pay -->
+  <g transform="translate(585, 34)">
+    <!-- Apple Logo -->
+    <path fill="#000000" d="M19.4 16.4c-1-1.3-2.7-2.3-4.3-2.2-.3 1.7.5 3.5 1.4 4.6 1 1.3 2.8 2.2 4.2 2.3.3-1.8-.4-3.5-1.3-4.7zm1.3 2.5c-2.4-.1-4.5 1.4-5.6 1.4-1.2 0-2.9-1.3-4.7-1.3-2.4 0-4.7 1.4-6 3.6-2.5 4.5-.6 11.1 1.8 14.8 1.3 1.8 2.7 3.7 4.6 3.6 1.9-.1 2.6-1.3 4.9-1.3 2.3 0 2.9 1.3 4.9 1.3 2 0 3.3-1.8 4.5-3.6 1.4-2 2-4.1 2-4.2-.1 0-4-1.5-4-6 0-3.8 3.1-5.6 3.2-5.7-1.8-2.6-4.5-2.8-5.6-2.6z"/>
+    <text x="35" y="37" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#000000">Pay</text>
+  </g>
+
+  <!-- Divider 4 -->
+  <line x1="710" y1="20" x2="710" y2="110" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Brand Section 5: Google Pay -->
+  <g transform="translate(745, 42)">
+    <g transform="translate(0, 5)">
+      <!-- G Logo -->
+      <path fill="#4285F4" d="M23.5 20.4c0-1.4-.1-2.8-.4-4.1H12v7.8h6.5c-.3 1.5-1.1 2.8-2.4 3.7v3.1h3.9c2.3-2.1 3.5-5.3 3.5-10.5z"/>
+      <path fill="#34A853" d="M12 32.1c3.3 0 6-1.1 8-3l-3.9-3.1c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.8-5h-4v3.1c2 4 6.1 6.8 10.8 6.8z"/>
+      <path fill="#FBBC05" d="M5.2 22.2c-.3-.8-.4-1.6-.4-2.5s.1-1.7.4-2.5v-3.1h-4C.4 15.8 0 17.7 0 19.7s.4 3.9 1.2 5.6l4-3.1z"/>
+      <path fill="#EA4335" d="M12 7.3c1.8 0 3.4.6 4.6 1.8l3.5-3.5C18 3.6 15.2 2.6 12 2.6 7.3 2.6 3.2 5.4 1.2 9.4l4 3.1c1-2.9 3.7-5.2 6.8-5.2z"/>
+    </g>
+    <text x="36" y="38" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="36" font-weight="600" fill="#5f6368">Pay</text>
+  </g>
+
+  <!-- Right Accent Badge: "Card Pay" -->
+  <g transform="translate(875, 40)">
+    <rect width="95" height="50" rx="8" fill="#0f172a"/>
+    <text x="47.5" y="31" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="900" fill="#ffd75a" text-anchor="middle" letter-spacing="1">CARD PAY</text>
+  </g>
+</svg>

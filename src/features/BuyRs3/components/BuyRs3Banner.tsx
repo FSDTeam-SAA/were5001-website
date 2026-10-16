@@ -11,11 +11,16 @@ const MIN_ORDER = 100;
 const PRESET_AMOUNTS = [100, 250, 500, 1000, 2500, 5000];
 
 const paymentMethods = [
+  {
+    id: "card-pay",
+    name: "Card Pay (PayPal, Credit Card, Debit Card, Apple Pay, Google Pay)",
+    image: "/assets/footer/card-pay-combined.svg",
+    isFeatured: true,
+  },
   { id: "crypto", name: "Crypto", image: "/assets/footer/payment-07.png" },
   { id: "interac", name: "Interac e-Transfer", image: "/assets/footer/payment-03.png" },
   { id: "skrill", name: "Skrill", image: "/assets/footer/payment-01.png" },
   { id: "neteller", name: "Neteller", image: "/assets/footer/payment-02.png" },
-  { id: "paypal", name: "PayPal", image: "/assets/footer/payment-04.png" },
   { id: "paysafecard", name: "paysafecard", image: "/assets/footer/payment-09.png" },
   { id: "przelewy24", name: "Przelewy24", image: "/assets/footer/payment-08.png" },
   { id: "paysafecash", name: "Paysafe:cash", image: "/assets/footer/payment-10.png" },
@@ -24,7 +29,6 @@ const paymentMethods = [
   { id: "uk-bank", name: "UK Bank Transfer", image: "/assets/footer/payment-13.png" },
   { id: "eu-bank", name: "EU Bank Transfer", image: "/assets/footer/payment-12.png" },
   { id: "bancontact", name: "Bancontact", image: "/assets/footer/payment-16.png" },
-  { id: "sepa", name: "SEPA", image: "/assets/footer/payment-14.png" },
   { id: "ideal", name: "iDeal", image: "/assets/footer/payment-11.png" },
 ];
 
@@ -378,38 +382,78 @@ export default function BuyRs3Banner() {
                   <span className="text-xs font-semibold text-[#808f9c]">15 Secure Options</span>
                 </div>
 
-                {/* 15 Payment Methods Grid */}
-                <div className="grid grid-cols-4 gap-3 max-[880px]:grid-cols-3 max-[540px]:grid-cols-2">
-                  {paymentMethods.map((method) => {
-                    const isSelected = selectedPayment === method.id;
-                    return (
+                {/* 1. Featured Big Card Pay Button (PayPal, Credit Card, Debit Card, Apple Pay, Google Pay) */}
+                {(() => {
+                  const cardPay = paymentMethods.find((m) => m.id === "card-pay");
+                  if (!cardPay) return null;
+                  const isSelected = selectedPayment === cardPay.id;
+                  return (
+                    <div className="mb-4">
                       <button
                         type="button"
-                        key={method.id}
-                        onClick={() => setSelectedPayment(method.id)}
-                        className={`group relative flex h-13.5 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-[0_3px_10px_rgba(0,0,0,0.5)] transition-all duration-200 cursor-pointer ${isSelected
-                          ? "ring-2 ring-[#ffda5d] shadow-[0_0_20px_rgba(214,164,58,0.65)] scale-[1.02]"
-                          : "opacity-95 hover:opacity-100 hover:scale-[1.01] hover:shadow-[0_5px_16px_rgba(0,0,0,0.6)]"
-                          }`}
+                        onClick={() => setSelectedPayment(cardPay.id)}
+                        className={`group relative flex w-full flex-col items-center justify-center rounded-2xl bg-white p-3 sm:p-4 shadow-[0_4px_16px_rgba(0,0,0,0.5)] transition-all duration-200 cursor-pointer ${
+                          isSelected
+                            ? "ring-3 ring-[#ffda5d] shadow-[0_0_26px_rgba(214,164,58,0.7)] scale-[1.01]"
+                            : "opacity-95 hover:opacity-100 hover:scale-[1.005] hover:shadow-[0_6px_22px_rgba(0,0,0,0.65)]"
+                        }`}
                         aria-pressed={isSelected}
-                        aria-label={`Select ${method.name}`}
+                        aria-label="Select Card Pay (PayPal, Credit Card, Debit Card, Apple Pay, Google Pay)"
                       >
                         <Image
-                          src={method.image}
-                          alt={method.name}
-                          width={110}
-                          height={38}
-                          className="max-h-7.5 w-auto max-w-full object-contain"
+                          src={cardPay.image}
+                          alt="PayPal, Credit Card, Debit Card, Apple Pay, Google Pay"
+                          width={1000}
+                          height={130}
+                          className="h-14 sm:h-16 w-auto max-w-full object-contain"
+                          priority
                         />
-                        {/* Selected Gold Checkmark Badge */}
+
                         {isSelected && (
-                          <span className="absolute -top-1.5 -right-1.5 grid size-4.5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[10px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.85)]">
+                          <span className="absolute -top-2 -right-2 grid size-6 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-xs font-black text-yellow-950 shadow-[0_0_10px_rgba(214,164,58,0.9)]">
                             ✓
                           </span>
                         )}
                       </button>
-                    );
-                  })}
+                    </div>
+                  );
+                })()}
+
+                {/* Other Payment Methods Grid */}
+                <div className="grid grid-cols-4 gap-3 max-[880px]:grid-cols-3 max-[540px]:grid-cols-2">
+                  {paymentMethods
+                    .filter((m) => m.id !== "card-pay")
+                    .map((method) => {
+                      const isSelected = selectedPayment === method.id;
+                      return (
+                        <button
+                          type="button"
+                          key={method.id}
+                          onClick={() => setSelectedPayment(method.id)}
+                          className={`group relative flex h-13.5 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-[0_3px_10px_rgba(0,0,0,0.5)] transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "ring-2 ring-[#ffda5d] shadow-[0_0_20px_rgba(214,164,58,0.65)] scale-[1.02]"
+                              : "opacity-95 hover:opacity-100 hover:scale-[1.01] hover:shadow-[0_5px_16px_rgba(0,0,0,0.6)]"
+                          }`}
+                          aria-pressed={isSelected}
+                          aria-label={`Select ${method.name}`}
+                        >
+                          <Image
+                            src={method.image}
+                            alt={method.name}
+                            width={110}
+                            height={38}
+                            className="max-h-7.5 w-auto max-w-full object-contain"
+                          />
+                          {/* Selected Gold Checkmark Badge */}
+                          {isSelected && (
+                            <span className="absolute -top-1.5 -right-1.5 grid size-4.5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[10px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.85)]">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                 </div>
               </div>
             </div>
@@ -554,14 +598,23 @@ export default function BuyRs3Banner() {
                     Live Support Checkout
                   </h4>
                   <p className="text-xs text-[#8e9ca7]">
-                    Selected Payment: <span className="capitalize font-semibold text-white">{selectedPayment}</span>
+                    Selected Payment:{" "}
+                    <span className="font-semibold text-white">
+                      {selectedPayment === "card-pay" ? "Card Pay (Credit/Debit/Apple/Google Pay/PayPal)" : selectedPayment.toUpperCase()}
+                    </span>
                   </p>
                 </div>
               </div>
               <div className="mt-4 space-y-3 text-sm text-[#cbd6dc]">
-                <p>
-                  To pay via <strong>{selectedPayment.toUpperCase()}</strong> for <strong>{amount}M RS3 Gold (${total})</strong>, our live agents are standing by to provide the exact direct payment address or tag.
-                </p>
+                {selectedPayment === "card-pay" ? (
+                  <p>
+                    You are purchasing <strong>{amount}M RS3 Gold</strong> for <strong>${total} USD</strong> using <strong>Card Pay</strong>. Our 24/7 LiveChat team will send your secure payment link and confirm your delivery in game immediately!
+                  </p>
+                ) : (
+                  <p>
+                    To pay via <strong>{selectedPayment.toUpperCase()}</strong> for <strong>{amount}M RS3 Gold (${total})</strong>, our live agents are standing by to provide the exact direct payment address or tag.
+                  </p>
+                )}
                 <p className="text-xs text-[#8e9ca7]">
                   Delivery is completed in-game immediately upon payment confirmation (2–20 minutes).
                 </p>
@@ -575,7 +628,7 @@ export default function BuyRs3Banner() {
                   Close
                 </button>
                 <a
-                  href="/contact"
+                  href={`/contact?pay=${selectedPayment === "card-pay" ? "card pay" : selectedPayment}&item=${encodeURIComponent(`${amount}M RS3 Gold`)}&price=${total}`}
                   className="flex-1 text-center rounded-xl bg-[linear-gradient(180deg,#f3b23e,#c77a10)] py-2.5 text-xs font-black tracking-wider text-[#2a1705] shadow-[0_4px_16px_rgba(214,164,58,0.4)] hover:bg-[linear-gradient(180deg,#ffd46e,#d88b18)]"
                 >
                   Open LiveChat

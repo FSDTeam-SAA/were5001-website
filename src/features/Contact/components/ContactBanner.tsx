@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   MessageSquare,
   Copy,
@@ -64,6 +65,7 @@ function CornerOrnament({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
 }
 
 export default function ContactBanner() {
+  const searchParams = useSearchParams();
   const [copied, setCopied] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMessage, setChatMessage] = useState("");
@@ -73,6 +75,31 @@ export default function ContactBanner() {
       text: "Hello! Welcome to SECNX 24/7 Live Support. How can we help you with your order today?",
     },
   ]);
+
+  useEffect(() => {
+    const pay = searchParams.get("pay");
+    const item = searchParams.get("item");
+    const price = searchParams.get("price");
+
+    if (pay || item) {
+      setChatOpen(true);
+      const userInquiry = `Hi, I would like to pay with ${pay ? pay.toUpperCase() : "CARD PAY"} for ${item || "my purchase"} (Amount: $${price || "0.00"}). Could you please guide me through the payment?`;
+      setChatHistory([
+        {
+          sender: "bot",
+          text: "Hello! Welcome to SECNX 24/7 Live Support. An agent is online to assist you.",
+        },
+        {
+          sender: "user",
+          text: userInquiry,
+        },
+        {
+          sender: "bot",
+          text: `Thank you for choosing SECNX! We have received your request to pay via ${pay ? pay.toUpperCase() : "Card Pay"} for ${item || "your order"} ($${price || "0.00"}). An agent will provide the secure checkout link or tag right now.`,
+        },
+      ]);
+    }
+  }, [searchParams]);
 
   const handleCopyId = () => {
     if (navigator?.clipboard?.writeText) {

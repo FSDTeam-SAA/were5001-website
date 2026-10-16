@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import ScrollObserver from "@/components/shared/ScrollObserver";
-import FAQ from "@/features/Home/components/FAQ";
+import ServiceFAQ from "@/components/shared/ServiceFAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
 import SkillingBanner from "@/features/Skilling/components/SkillingBanner";
 
@@ -19,7 +19,7 @@ export default function SkillingPage() {
       <Navbar />
       <SkillingBanner />
       <TrustedByTraders />
-      <FAQ />
+      <ServiceFAQ service="skilling" />
       <Footer />
     </main>
   );

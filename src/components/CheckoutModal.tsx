@@ -35,8 +35,8 @@ export default function CheckoutModal({
 }: CheckoutModalProps) {
   const [rsn, setRsn] = useState(orderInfo.defaultRsn || "");
   const [email, setEmail] = useState("");
-  const [selectedGateway, setSelectedGateway] = useState<"paypal" | "skrill">(
-    "paypal"
+  const [selectedGateway, setSelectedGateway] = useState<"card-pay" | "paypal" | "skrill">(
+    "card-pay"
   );
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -55,6 +55,15 @@ export default function CheckoutModal({
 
     if (orderInfo.price <= 0) {
       setErrorMessage("Order amount must be greater than $0.00.");
+      return;
+    }
+
+    if (selectedGateway === "card-pay") {
+      const itemTitle = orderInfo.amountM
+        ? `${orderInfo.amountM}M ${orderInfo.game} Gold`
+        : orderInfo.title;
+      const chatUrl = `/contact?pay=card pay&item=${encodeURIComponent(itemTitle)}&price=${orderInfo.price.toFixed(2)}`;
+      window.location.href = chatUrl;
       return;
     }
 
@@ -227,56 +236,84 @@ export default function CheckoutModal({
           {/* Payment Method Selector */}
           <div>
             <label className="block text-xs font-bold tracking-wide text-[#ffda5d] uppercase mb-2">
-              Select Automated Payment Gateway
+              Select Payment Method
             </label>
-            <div className="grid grid-cols-2 gap-3">
-              {/* PayPal Option */}
+            <div className="space-y-2.5">
+              {/* Featured Combined Card Pay Option */}
               <button
                 type="button"
-                onClick={() => setSelectedGateway("paypal")}
-                className={`relative flex h-14 items-center justify-center rounded-xl bg-white px-3 transition-all ${
-                  selectedGateway === "paypal"
-                    ? "ring-2 ring-[#ffda5d] shadow-[0_0_16px_rgba(214,164,58,0.6)] scale-[1.02]"
-                    : "opacity-85 hover:opacity-100 hover:scale-[1.01]"
+                onClick={() => setSelectedGateway("card-pay")}
+                className={`relative flex w-full items-center justify-between rounded-xl bg-white p-2.5 transition-all cursor-pointer ${
+                  selectedGateway === "card-pay"
+                    ? "ring-2 ring-[#ffda5d] shadow-[0_0_20px_rgba(214,164,58,0.7)] scale-[1.01]"
+                    : "opacity-85 hover:opacity-100 hover:scale-[1.005]"
                 }`}
               >
-                <Image
-                  src="/assets/footer/payment-04.png"
-                  alt="PayPal"
-                  width={110}
-                  height={34}
-                  className="max-h-7 w-auto object-contain"
-                />
-                {selectedGateway === "paypal" && (
+                <div className="flex h-11 w-full items-center justify-center">
+                  <Image
+                    src="/assets/footer/card-pay-combined.svg"
+                    alt="Card Pay (PayPal, Credit Card, Debit Card, Apple Pay, Google Pay)"
+                    width={460}
+                    height={90}
+                    className="max-h-9 w-auto object-contain"
+                  />
+                </div>
+                {selectedGateway === "card-pay" && (
                   <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[11px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.85)]">
                     ✓
                   </span>
                 )}
               </button>
 
-              {/* Skrill Option */}
-              <button
-                type="button"
-                onClick={() => setSelectedGateway("skrill")}
-                className={`relative flex h-14 items-center justify-center rounded-xl bg-white px-3 transition-all ${
-                  selectedGateway === "skrill"
-                    ? "ring-2 ring-[#ffda5d] shadow-[0_0_16px_rgba(214,164,58,0.6)] scale-[1.02]"
-                    : "opacity-85 hover:opacity-100 hover:scale-[1.01]"
-                }`}
-              >
-                <Image
-                  src="/assets/footer/payment-01.png"
-                  alt="Skrill"
-                  width={110}
-                  height={34}
-                  className="max-h-7 w-auto object-contain"
-                />
-                {selectedGateway === "skrill" && (
-                  <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[11px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.85)]">
-                    ✓
-                  </span>
-                )}
-              </button>
+              <div className="grid grid-cols-2 gap-3">
+                {/* PayPal Option */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedGateway("paypal")}
+                  className={`relative flex h-12 items-center justify-center rounded-xl bg-white px-3 transition-all cursor-pointer ${
+                    selectedGateway === "paypal"
+                      ? "ring-2 ring-[#ffda5d] shadow-[0_0_16px_rgba(214,164,58,0.6)] scale-[1.02]"
+                      : "opacity-85 hover:opacity-100 hover:scale-[1.01]"
+                  }`}
+                >
+                  <Image
+                    src="/assets/footer/payment-04.png"
+                    alt="PayPal"
+                    width={110}
+                    height={34}
+                    className="max-h-6 w-auto object-contain"
+                  />
+                  {selectedGateway === "paypal" && (
+                    <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[11px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.85)]">
+                      ✓
+                    </span>
+                  )}
+                </button>
+
+                {/* Skrill Option */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedGateway("skrill")}
+                  className={`relative flex h-12 items-center justify-center rounded-xl bg-white px-3 transition-all cursor-pointer ${
+                    selectedGateway === "skrill"
+                      ? "ring-2 ring-[#ffda5d] shadow-[0_0_16px_rgba(214,164,58,0.6)] scale-[1.02]"
+                      : "opacity-85 hover:opacity-100 hover:scale-[1.01]"
+                  }`}
+                >
+                  <Image
+                    src="/assets/footer/payment-01.png"
+                    alt="Skrill"
+                    width={110}
+                    height={34}
+                    className="max-h-6 w-auto object-contain"
+                  />
+                  {selectedGateway === "skrill" && (
+                    <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-[linear-gradient(180deg,#ffda5d,#d78b14)] text-[11px] font-black text-yellow-950 shadow-[0_0_8px_rgba(214,164,58,0.85)]">
+                      ✓
+                    </span>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -297,14 +334,14 @@ export default function CheckoutModal({
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="flex-1 rounded-xl border border-[#271f14] bg-[#141822] py-3 text-xs font-bold text-[#8e9ca7] transition-colors hover:bg-[#1a202c] hover:text-white disabled:opacity-50"
+              className="flex-1 rounded-xl border border-[#271f14] bg-[#141822] py-3 text-xs font-bold text-[#8e9ca7] transition-colors hover:bg-[#1a202c] hover:text-white disabled:opacity-50 cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 relative flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(180deg,#f3b23e,#c77a10)] py-3 text-xs font-black tracking-wider text-[#2a1705] shadow-[0_4px_16px_rgba(214,164,58,0.45)] transition-all hover:bg-[linear-gradient(180deg,#ffd46e,#d88b18)] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex-1 relative flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(180deg,#f3b23e,#c77a10)] py-3 text-xs font-black tracking-wider text-[#2a1705] shadow-[0_4px_16px_rgba(214,164,58,0.45)] transition-all hover:bg-[linear-gradient(180deg,#ffd46e,#d88b18)] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {isLoading ? (
                 <>
@@ -314,7 +351,13 @@ export default function CheckoutModal({
               ) : (
                 <>
                   <Lock className="size-3.5" />
-                  <span>Pay with {selectedGateway === "paypal" ? "PayPal" : "Skrill"}</span>
+                  <span>
+                    {selectedGateway === "card-pay"
+                      ? "Pay with Card Pay (LiveChat)"
+                      : selectedGateway === "paypal"
+                      ? "Pay with PayPal"
+                      : "Pay with Skrill"}
+                  </span>
                 </>
               )}
             </button>

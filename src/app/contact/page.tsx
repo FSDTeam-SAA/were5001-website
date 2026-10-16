@@ -5,6 +5,7 @@ import ScrollObserver from "@/components/shared/ScrollObserver";
 import FAQ from "@/features/Home/components/FAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
 import WhyPlayersBuy from "@/features/Home/components/WhyPlayersBuy";
+import { Suspense } from "react";
 import ContactBanner from "@/features/Contact/components/ContactBanner";
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function ContactPage() {
     <main className="min-h-screen bg-[#020609]">
       <ScrollObserver />
       <Navbar />
-      <ContactBanner />
+      <Suspense fallback={<div className="min-h-[500px]" />}>
+        <ContactBanner />
+      </Suspense>
       <WhyPlayersBuy />
       <TrustedByTraders />
       <FAQ />
