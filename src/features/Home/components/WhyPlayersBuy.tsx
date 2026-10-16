@@ -70,7 +70,7 @@ const benefits: Benefit[] = [
   },
   {
     title: "Safe & Secure",
-    description: "Carefully sourced gold for safer trades, zero hassle, and complete peace of mind.",
+    description: "Carefully sourced items for safer trades, zero hassle, and complete peace of mind.",
     icon: (
       <IconContainer>
         <path d="M32 9 11 18v14c0 12 9 18 21 22 12-4 21-10 21-22V18L32 9Z" />

@@ -4,7 +4,6 @@ import Navbar from "@/components/shared/Navbar";
 import ScrollObserver from "@/components/shared/ScrollObserver";
 import FAQ from "@/features/Home/components/FAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
-import WhyPlayersBuy from "@/features/Home/components/WhyPlayersBuy";
 import SkillingBanner from "@/features/Skilling/components/SkillingBanner";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export default function SkillingPage() {
       <ScrollObserver />
       <Navbar />
       <SkillingBanner />
-      <WhyPlayersBuy />
       <TrustedByTraders />
       <FAQ />
       <Footer />

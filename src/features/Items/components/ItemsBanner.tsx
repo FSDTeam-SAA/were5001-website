@@ -20,79 +20,96 @@ import { GameCategory, GameItem } from "../types";
 import { OSRS_ITEMS, RS3_ITEMS } from "../data/itemsData";
 import { useCartStore } from "@/store/cart.store";
 
+function IconContainer({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid size-12 sm:size-14 place-items-center rounded-2xl border border-[#d6a43a]/70 bg-[linear-gradient(180deg,rgba(214,164,58,0.18),rgba(214,164,58,0.03))] text-[#ffd75a] shadow-[0_4px_16px_rgba(0,0,0,0.5),0_0_20px_rgba(214,164,58,0.35),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 64 64"
+        className="size-7 sm:size-8"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.5"
+      >
+        {children}
+      </svg>
+    </div>
+  );
+}
+
 const ADVANTAGE_CARDS = [
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f5ba42" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-8 drop-shadow-[0_0_8px_rgba(245,186,66,0.6)]">
-        <circle cx="12" cy="12" r="9" />
-        <polyline points="12 7 12 12 15 14" />
-      </svg>
+      <IconContainer>
+        <circle cx="32" cy="33" r="21" />
+        <path d="M32 18v3m0 24v3M17 33h3m24 0h3M32 33l8 5m-8-5V24" />
+        <path d="M26 9h12" />
+      </IconContainer>
     ),
     title: "Fast Delivery",
-    description: "Delivery in 2-20 minutes so you can get back to the game.",
+    description: "Delivery in 2-20 minutes so you can get back to the game immediately.",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f5ba42" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-8 drop-shadow-[0_0_8px_rgba(245,186,66,0.6)]">
-        <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-        <path d="M19 16c0 2-1 4-4 4" />
-      </svg>
+      <IconContainer>
+        <path d="M11 31a21 21 0 0 1 42 0" />
+        <path d="M14 32v10a4 4 0 0 0 8 0V32a4 4 0 0 0-8 0Zm28 0v10a4 4 0 0 0 8 0V32a4 4 0 0 0-8 0Z" />
+        <path d="M50 42c0 7-5 10-10 10" />
+      </IconContainer>
     ),
     title: "Instant Replies 24/7",
-    description: "Get instant replies in under 1 minute whenever you need us by experienced English speakers.",
+    description: "Replies in under 1 minute whenever you need us, staffed by experienced English speakers.",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f5ba42" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-8 drop-shadow-[0_0_8px_rgba(245,186,66,0.6)]">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
+      <IconContainer>
+        <path d="M32 9c7 5 13 6 19 6v14c0 12-8 21-19 26-11-5-19-14-19-26V15c6 0 12-1 19-6Z" />
+        <path d="m24 31 5 5 11-12" />
+      </IconContainer>
     ),
-    title: "Buy Gold Instantly – No ID. No Sign-Up.",
-    description: "Skip the registration forms and verification process. With SECNX, you can place your order in minutes without creating an account or submitting ID, then collect your gold as soon as your order is ready.",
+    title: "Buy Items Instantly – No ID. No Sign-Up.",
+    description: "Skip the registration forms and verification process. With SECNX, you can place your order in minutes without creating an account or submitting ID, then collect your item as soon as your order is ready.",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f5ba42" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-8 drop-shadow-[0_0_8px_rgba(245,186,66,0.6)]">
-        <rect width="20" height="14" x="2" y="5" rx="2" />
-        <line x1="2" x2="22" y1="10" y2="10" />
-        <line x1="6" x2="10" y1="14" y2="14" />
-        <line x1="12" x2="14" y1="14" y2="14" />
-      </svg>
+      <IconContainer>
+        <rect x="7" y="14" width="50" height="36" rx="5" />
+        <path d="M7 25h50M18 39h4m7 0h4m7 0h4" />
+      </IconContainer>
     ),
     title: "Many Payment Methods",
-    description: "Choose from many payment methods that suit you.",
+    description: "Choose from a wide variety of secure global and local payment methods that work for you.",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f5ba42" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-8 drop-shadow-[0_0_8px_rgba(245,186,66,0.6)]">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        <rect x="9.5" y="11" width="5" height="4" rx="0.8" />
-        <path d="M10.5 11V9.5a1.5 1.5 0 0 1 3 0V11" />
-      </svg>
+      <IconContainer>
+        <path d="M32 9 11 18v14c0 12 9 18 21 22 12-4 21-10 21-22V18L32 9Z" />
+        <rect x="24" y="31" width="16" height="14" rx="2" />
+        <path d="M28 31v-4a4 4 0 0 1 8 0v4m-4 5v3" />
+      </IconContainer>
     ),
     title: "Safe & Secure",
-    description: "Every delivery is handled with account safety in mind, using careful and established in-game trading methods.",
+    description: "Carefully sourced items for safer trades, zero hassle, and complete peace of mind.",
   },
   {
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#f5ba42" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-8 drop-shadow-[0_0_8px_rgba(245,186,66,0.6)]">
-        {/* Top group: 3 people avatars */}
-        <circle cx="12" cy="5.5" r="2" />
-        <path d="M8.5 11c0-1.8 1.5-2.8 3.5-2.8s3.5 1 3.5 2.8" />
-        <circle cx="6.5" cy="7" r="1.5" />
-        <path d="M4 11.5c0-1.2 1-2 2.5-2 .5 0 .9.1 1.3.4" />
-        <circle cx="17.5" cy="7" r="1.5" />
-        <path d="M20 11.5c0-1.2-1-2-2.5-2-.5 0-.9.1-1.3.4" />
-        {/* Bottom chest/stock */}
-        <rect x="5" y="13.5" width="14" height="7.5" rx="1.5" />
-        <line x1="5" x2="19" y1="17" y2="17" />
-        <circle cx="12" cy="17" r="1" fill="#f5ba42" />
-      </svg>
+      <IconContainer>
+        <circle cx="21" cy="23" r="5" fill="currentColor" stroke="none" />
+        <circle cx="32" cy="18" r="6" fill="currentColor" stroke="none" />
+        <circle cx="43" cy="23" r="5" fill="currentColor" stroke="none" />
+        <path
+          d="M12 43c0-7 5-11 11-11 4 0 6 2 9 4 3-2 5-4 9-4 6 0 11 4 11 11"
+          fill="currentColor"
+          stroke="none"
+        />
+        <path d="M11 44h42v7H11z" />
+        <path d="M20 44v7m24-7v7" />
+      </IconContainer>
     ),
     title: "Large Stock Available",
-    description: "Extensive stock ready for fast delivery.",
+    description: "Extensive reserves ready around the clock for instant fulfillment on any size order.",
   },
 ];
 
@@ -250,20 +267,23 @@ export default function ItemsBanner() {
             <span className="h-px w-16 bg-gradient-to-l from-transparent via-[#d6a43a]/60 to-[#d6a43a] sm:w-28" />
           </div>
 
-          {/* 6 Advantage Cards Grid matching screenshot */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-3.5">
+          {/* 6 Advantage Cards Grid matching homepage design */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 sm:gap-4">
             {ADVANTAGE_CARDS.map((card) => (
               <div
                 key={card.title}
-                className="group flex flex-col items-center rounded-2xl border border-[#f5ba42]/50 bg-[#070e16]/92 p-4 text-center shadow-[0_8px_24px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#f5ba42] hover:shadow-[0_0_20px_rgba(245,186,66,0.3)] hover:-translate-y-0.5"
+                className="group relative flex flex-col items-center rounded-2xl border border-[#d6a43a]/55 bg-[linear-gradient(160deg,rgba(18,29,38,0.85),rgba(7,15,21,0.95))] p-4 text-center shadow-[0_16px_36px_-12px_rgba(0,0,0,0.9),0_0_24px_-6px_rgba(214,164,58,0.22)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#d6a43a]/80 hover:shadow-[0_22px_44px_-12px_rgba(0,0,0,0.95),0_0_32px_-6px_rgba(214,164,58,0.38)]"
               >
-                <div className="mb-3 grid size-12 place-items-center">
+                {/* Subtle gold top line accent */}
+                <span className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#d6a43a]/70 to-transparent opacity-100" />
+
+                <div className="mb-4 flex items-center justify-center">
                   {card.icon}
                 </div>
-                <h3 className="text-[13px] font-bold leading-snug text-[#ffda5d] sm:text-[14px]">
+                <h3 className="text-[13px] font-bold leading-snug text-[#ffdf70] sm:text-[14px]">
                   {card.title}
                 </h3>
-                <p className="mt-2 text-[11px] leading-relaxed text-[#94a3b8] sm:text-xs">
+                <p className="mt-2 text-[11px] leading-relaxed text-[#b5c4ce] sm:text-xs">
                   {card.description}
                 </p>
               </div>

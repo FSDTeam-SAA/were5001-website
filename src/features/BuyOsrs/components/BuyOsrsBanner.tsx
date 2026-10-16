@@ -248,8 +248,8 @@ export default function BuyOsrsBanner() {
 
         {/* 3. Main Order Form Card */}
         <div className="mt-8 overflow-hidden rounded-2xl border border-[#3e2c14] bg-[linear-gradient(180deg,rgba(16,13,9,0.96),rgba(8,9,11,0.98))] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,215,90,0.12)] backdrop-blur-xl sm:p-9 max-[640px]:p-5">
-          {/* Card Top Row: Title + Telemetry Badges */}
-          <div className="flex items-center justify-between border-b border-[#291f13] pb-6 max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-4">
+          {/* Card Top Row: Title */}
+          <div className="flex items-center justify-between border-b border-[#291f13] pb-6">
             <div className="flex items-center gap-4">
               <div className="relative grid size-13 place-items-center rounded-2xl border border-[#d6a43a]/60 bg-[linear-gradient(180deg,#382509,#140e04)] shadow-[0_0_20px_rgba(214,164,58,0.35)]">
                 <span className="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" role="img" aria-label="Gold coins">
@@ -261,29 +261,6 @@ export default function BuyOsrsBanner() {
                   BUY OSRS GOLD
                 </h2>
                 <p className="text-sm font-medium text-[#9daab5]">Instant Delivery • 100% Sourced by Real Players</p>
-              </div>
-            </div>
-
-            {/* Right Telemetry Badges */}
-            <div className="flex items-center gap-4 sm:gap-6">
-              <div className="flex items-center gap-2.5 rounded-full border border-[#342718] bg-[#14110c] px-4 py-2 shadow-sm">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#ffd75a" strokeWidth="2.5" className="size-4.5 shrink-0">
-                  <path d="M18 20V10M12 20V4M6 20v-6" />
-                </svg>
-                <div className="text-xs sm:text-sm">
-                  <span className="text-[#8e9ca7]">Min Order: </span>
-                  <span className="font-bold text-[#ffda5d]">{MIN_ORDER}M</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 rounded-full border border-[#342718] bg-[#14110c] px-4 py-2 shadow-sm">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#ffd75a" strokeWidth="2.5" className="size-4.5 shrink-0">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
-                <div className="text-xs sm:text-sm">
-                  <span className="text-[#8e9ca7]">Delivery: </span>
-                  <span className="font-bold text-[#ffda5d]">2 ~ 20 min</span>
-                </div>
               </div>
             </div>
           </div>

@@ -42,6 +42,8 @@ export interface SkrillPaymentResponse {
   data: {
     transactionId: string;
     checkoutUrl: string;
+    redirectUrl?: string;
+    sessionId?: string;
     formFields: Record<string, string>;
     status: string;
   };
@@ -123,13 +125,19 @@ export const paymentService = {
   },
 
   /**
-   * Dynamically constructs a hidden HTML form and posts it to Skrill Quick Checkout
+   * Redirects customer to Skrill Quick Checkout
    */
   executeSkrillRedirect(
     checkoutUrl: string,
     formFields: Record<string, string>
   ) {
-    if (typeof document === "undefined") return;
+    if (typeof window === "undefined") return;
+
+    // If checkoutUrl is already a direct session URL (e.g. contains ?sid=), redirect directly
+    if (checkoutUrl.includes("sid=")) {
+      window.location.href = checkoutUrl;
+      return;
+    }
 
     const form = document.createElement("form");
     form.method = "POST";

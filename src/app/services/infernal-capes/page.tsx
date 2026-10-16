@@ -4,7 +4,6 @@ import Navbar from "@/components/shared/Navbar";
 import ScrollObserver from "@/components/shared/ScrollObserver";
 import FAQ from "@/features/Home/components/FAQ";
 import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
-import WhyPlayersBuy from "@/features/Home/components/WhyPlayersBuy";
 import InfernalCapesBanner from "@/features/InfernalCapes/components/InfernalCapesBanner";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export default function InfernalCapesPage() {
       <ScrollObserver />
       <Navbar />
       <InfernalCapesBanner />
-      <WhyPlayersBuy />
       <TrustedByTraders />
       <FAQ />
       <Footer />
