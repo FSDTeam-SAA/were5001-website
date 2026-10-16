@@ -50,11 +50,27 @@ const linkGroups = [
   },
 ];
 
-// All 16 available payment logos
-const payments = Array.from({ length: 16 }, (_, index) => ({
-  src: `/assets/footer/payment-${String(index + 1).padStart(2, "0")}.png`,
-  alt: `Payment method ${index + 1}`,
-}));
+// All payment methods matching the buy pages
+const payments = [
+  {
+    src: "/assets/footer/card-pay-combined.svg",
+    alt: "Card Pay (PayPal, Credit Card, Debit Card, Apple Pay, Google Pay)",
+    isCardPay: true,
+  },
+  { src: "/assets/footer/payment-07.png", alt: "Crypto" },
+  { src: "/assets/footer/payment-03.png", alt: "Interac e-Transfer" },
+  { src: "/assets/footer/payment-01.png", alt: "Skrill" },
+  { src: "/assets/footer/payment-02.png", alt: "Neteller" },
+  { src: "/assets/footer/payment-09.png", alt: "paysafecard" },
+  { src: "/assets/footer/payment-08.png", alt: "Przelewy24" },
+  { src: "/assets/footer/payment-10.png", alt: "Paysafe:cash" },
+  { src: "/assets/footer/payment-15.png", alt: "BLIK" },
+  { src: "/assets/footer/payment-05.png", alt: "Alipay" },
+  { src: "/assets/footer/payment-13.png", alt: "UK Bank Transfer" },
+  { src: "/assets/footer/payment-12.png", alt: "EU Bank Transfer" },
+  { src: "/assets/footer/payment-16.png", alt: "Bancontact" },
+  { src: "/assets/footer/payment-11.png", alt: "iDeal" },
+];
 
 function SocialButton({ label, href, children }: { label: string; href: string; children: ReactNode }) {
   return (
@@ -185,18 +201,22 @@ export default function Footer() {
             </span>
           </div>
 
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(64px,1fr))] gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             {payments.map((payment) => (
               <div
                 key={payment.src}
-                className="flex h-11 items-center justify-center rounded-lg bg-white px-2 py-1 shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-all duration-200 hover:bg-white hover:scale-105 hover:shadow-[0_0_14px_rgba(214,164,58,0.4)]"
+                className={`flex h-11 items-center justify-center rounded-lg bg-white px-3 py-1 shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-all duration-200 hover:scale-105 hover:shadow-[0_0_14px_rgba(214,164,58,0.4)] ${
+                  payment.isCardPay ? "min-w-[190px] flex-[1.4]" : "min-w-[68px] flex-1"
+                }`}
               >
                 <Image
                   src={payment.src}
                   alt={payment.alt}
-                  width={100}
+                  width={payment.isCardPay ? 240 : 100}
                   height={32}
-                  className="max-h-7 w-auto max-w-full object-contain"
+                  className={`w-auto max-w-full object-contain ${
+                    payment.isCardPay ? "max-h-8" : "max-h-7"
+                  }`}
                 />
               </div>
             ))}
