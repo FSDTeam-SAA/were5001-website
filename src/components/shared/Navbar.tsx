@@ -13,6 +13,7 @@ const navLinks = [
   { name: "BUY RS3 GOLD", href: "/buy/rs3" },
   { name: "SELL RS3 GOLD", href: "/sell/rs3" },
   { name: "ITEMS", href: "/items" },
+  { name: "ACCOUNTS", href: "/accounts/osrs" },
   // { name: "BLOG", href: "/blog" },
   { name: "CONTACT", href: "/contact" },
 ];
@@ -77,7 +78,9 @@ export default function Navbar() {
           aria-label="Primary navigation"
         >
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive =
+              pathname === link.href ||
+              (link.href === "/accounts/osrs" && pathname.startsWith("/accounts"));
             return (
               <Link
                 key={link.name}
@@ -194,7 +197,9 @@ export default function Navbar() {
         <div className="border-b border-[#213240] bg-[#050d14]/98 px-6 py-5 shadow-2xl backdrop-blur-xl min-[1121px]:hidden animate-fade-in-up">
           <nav className="flex flex-col space-y-3">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive =
+                pathname === link.href ||
+                (link.href === "/accounts/osrs" && pathname.startsWith("/accounts"));
               return (
                 <Link
                   key={link.name}

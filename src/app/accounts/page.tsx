@@ -1,0 +1,28 @@
+import type { Metadata } from "next";
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
+import ScrollObserver from "@/components/shared/ScrollObserver";
+import AccountsFAQ from "@/features/Accounts/components/AccountsFAQ";
+import TrustedByTraders from "@/features/Home/components/TrustedByTraders";
+import WhyPlayersBuy from "@/features/Home/components/WhyPlayersBuy";
+import AccountsBanner from "@/features/Accounts/components/AccountsBanner";
+
+export const metadata: Metadata = {
+  title: "Buy OSRS & RS3 Accounts | Hand-Trained & Verified Marketplace - SECNX",
+  description:
+    "Explore the SECNX RuneScape accounts marketplace. Hand-trained OSRS and RS3 accounts with instant delivery, email transfer ownership, and lifetime warranty.",
+};
+
+export default function AccountsPage() {
+  return (
+    <main className="min-h-screen bg-[#020609]">
+      <ScrollObserver />
+      <Navbar />
+      <AccountsBanner initialGame="OSRS" />
+      <WhyPlayersBuy />
+      <TrustedByTraders />
+      <AccountsFAQ />
+      <Footer />
+    </main>
+  );
+}

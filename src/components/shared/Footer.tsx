@@ -10,6 +10,7 @@ const linkGroups = [
       { name: "Sell OSRS Gold", href: "/sell/osrs" },
       { name: "OSRS Items", href: "/items" },
       { name: "OSRS Services", href: "/services" },
+      { name: "OSRS Accounts", href: "/accounts/osrs" },
     ],
   },
   {
@@ -19,6 +20,7 @@ const linkGroups = [
       { name: "Sell RS3 Gold", href: "/sell/rs3" },
       { name: "RS3 Items", href: "/items" },
       { name: "RS3 Services", href: "/services" },
+      { name: "RS3 Accounts", href: "/accounts/rs3" },
     ],
   },
   {
