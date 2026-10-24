@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import {
-  ChessQueen,
   ChevronDown,
   FileText,
   Handshake,
@@ -503,18 +502,8 @@ export default function SellOsrsBanner() {
             onClick={handleGetQuote}
             id="sell-osrs-submit-btn"
             aria-label="Sell Now"
-            className="group relative flex aspect-[204/63] w-[340px] cursor-pointer items-center justify-center bg-[url('/assets/slideshow/blank-buy-btn.png')] bg-contain bg-center bg-no-repeat transition-transform duration-200 active:scale-[0.97] hover:scale-[1.03] hover:bg-[url('/assets/slideshow/blank-buy-btn-hover.png')] drop-shadow-[0_12px_32px_rgba(214,164,58,0.55)] hover:drop-shadow-[0_16px_44px_rgba(214,164,58,0.85)] max-[640px]:w-[280px]"
-          >
-            {/* Positioned ChessQueen matching homepage Buy Now button */}
-            <ChessQueen
-              className="pointer-events-none absolute left-[18%] top-[45%] -translate-y-1/2 h-[27%] w-auto aspect-square text-[#4a1204] fill-[#4a1204]/30 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)] transition-transform duration-200 group-hover:scale-110"
-              strokeWidth={2.4}
-            />
-            {/* Authentic Roman serif typography matching embedded BUY NOW font */}
-            <span className="font-serif text-[18px] sm:text-[21px] font-bold tracking-[0.06em] text-[#4a1204] drop-shadow-[0_1px_1px_rgba(255,230,130,0.9)] select-none pl-4">
-              SELL NOW
-            </span>
-          </button>
+            className="group relative aspect-[204/63] w-[340px] cursor-pointer bg-[url('/assets/slideshow/sell-btn.png')] bg-contain bg-center bg-no-repeat transition-transform duration-200 active:scale-[0.97] hover:scale-[1.03] hover:bg-[url('/assets/slideshow/sell-btn-hover.png')] drop-shadow-[0_12px_32px_rgba(214,164,58,0.55)] hover:drop-shadow-[0_16px_44px_rgba(214,164,58,0.85)] max-[640px]:w-[280px]"
+          />
 
 
 
