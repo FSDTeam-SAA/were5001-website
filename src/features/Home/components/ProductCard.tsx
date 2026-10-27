@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { ChessQueen } from "lucide-react";
 import { useState } from "react";
 import CheckoutModal from "@/components/CheckoutModal";
 
@@ -156,19 +155,14 @@ export default function ProductCard({ variant }: { variant: Variant }) {
         </label>
       </div>
 
-      {/* Same "Buy Now" button art (normal + hover) with ChessQueen icon */}
+      {/* "Buy Now" button art (normal + hover) */}
       <button
         type="button"
         id={`${variant}-buy-now`}
         aria-label={`Buy ${game} Gold`}
         onClick={handleBuyNow}
-        className="group/btn absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97]"
-      >
-        <ChessQueen
-          className="pointer-events-none absolute left-[17%] top-[45%] -translate-y-1/2 h-[32%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)]"
-          strokeWidth={2.4}
-        />
-      </button>
+        className="group/btn absolute left-1/2 top-[66%] aspect-[204/63] w-[48.5cqw] -translate-x-1/2 cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-cover bg-center bg-no-repeat transition-transform active:scale-[.97] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')]"
+      />
 
       {/* Tagline — sits on the panel's bottom bar, between its arrows */}
       <p className="absolute inset-x-0 top-[87.2%] -translate-y-1/2 text-center font-[family-name:var(--font-inter)] text-[2.6cqw] font-semibold leading-none tracking-[.28em] text-[#9aa2a2]">

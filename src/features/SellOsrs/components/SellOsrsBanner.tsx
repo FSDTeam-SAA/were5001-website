@@ -17,7 +17,7 @@ const RATE_PER_M = 0.22;
 const DEFAULT_AMOUNT = 100;
 const AMOUNT_OPTIONS = [50, 100, 250, 500, 1000, 2500];
 
-// 12 Payment Methods shown in the screenshot
+// Payment Methods matching Sell RS3
 export type PaymentMethod = {
   id: string;
   name: string;
@@ -106,18 +106,6 @@ export default function SellOsrsBanner() {
       imageSrc: "/assets/footer/payment-03.png",
     },
     {
-      id: "skrill",
-      name: "Skrill",
-      type: "image",
-      imageSrc: "/assets/footer/payment-01.png",
-    },
-    {
-      id: "neteller",
-      name: "Neteller",
-      type: "image",
-      imageSrc: "/assets/footer/payment-02.png",
-    },
-    {
       id: "venmo",
       name: "Venmo",
       type: "svg",
@@ -144,26 +132,6 @@ export default function SellOsrsBanner() {
       name: "UK Bank Transfer",
       type: "image",
       imageSrc: "/assets/footer/payment-13.png",
-    },
-    {
-      id: "revolut",
-      name: "Revolut",
-      type: "svg",
-      svgComponent: (
-        <span className="font-sans text-[16px] font-black tracking-tight text-[#191c1f]">
-          Revolut
-        </span>
-      ),
-    },
-    {
-      id: "wise",
-      name: "Wise",
-      type: "svg",
-      svgComponent: (
-        <div className="flex items-center gap-1 font-sans text-[17px] font-black tracking-tight text-[#00b9ff]">
-          <span>7wise</span>
-        </div>
-      ),
     },
   ];
 

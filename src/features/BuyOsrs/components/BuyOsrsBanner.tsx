@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChessQueen, Loader2, AlertCircle, MessageSquare, X } from "lucide-react";
+import { Loader2, AlertCircle, MessageSquare, X } from "lucide-react";
 import { useState } from "react";
 import { paymentService } from "@/services/payment.service";
 
@@ -530,7 +530,7 @@ export default function BuyOsrsBanner() {
 
           {/* Bottom CTA: The Authentic Home Page Button Style (Spacious & Prominent) */}
           <div className="mt-12 flex flex-col items-center justify-center gap-3.5">
-            {/* Authentic RuneScape Fantasy Gem Buy Button from Homepage with ChessQueen */}
+            {/* Authentic RuneScape Fantasy Gem Buy Button from Homepage */}
             <button
               type="button"
               id="buy-osrs-submit-btn"
@@ -538,12 +538,7 @@ export default function BuyOsrsBanner() {
               disabled={isLoading}
               aria-label="Buy OSRS Gold Now"
               className="group relative aspect-[204/63] w-[340px] cursor-pointer bg-[url('/assets/slideshow/buy-btn.png')] bg-contain bg-center bg-no-repeat transition-transform duration-200 active:scale-[0.97] hover:scale-[1.03] hover:bg-[url('/assets/slideshow/buy-btn-hover.png')] drop-shadow-[0_12px_32px_rgba(214,164,58,0.55)] hover:drop-shadow-[0_16px_44px_rgba(214,164,58,0.85)] disabled:opacity-60 disabled:cursor-not-allowed max-[640px]:w-[280px]"
-            >
-              <ChessQueen
-                className="pointer-events-none absolute left-[18%] top-[45%] -translate-y-1/2 h-[27%] w-auto aspect-square text-[#3a1005] fill-[#4a1506]/35 drop-shadow-[0_1px_1px_rgba(255,225,120,0.75)] transition-transform duration-200 group-hover:scale-110"
-                strokeWidth={2.4}
-              />
-            </button>
+            />
 
             {/* Loading Indicator */}
             {isLoading && (

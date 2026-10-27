@@ -14,8 +14,6 @@ const navLinks = [
   { name: "SELL RS3 GOLD", href: "/sell/rs3" },
   { name: "ITEMS", href: "/items" },
   { name: "ACCOUNTS", href: "/accounts/osrs" },
-  // { name: "BLOG", href: "/blog" },
-  { name: "CONTACT", href: "/contact" },
 ];
 
 const osrsServices = [
