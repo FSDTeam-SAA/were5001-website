@@ -18,8 +18,17 @@ const openSans = Open_Sans({ variable: "--font-open-sans", subsets: ["latin"] })
 const orbitron = Orbitron({ variable: "--font-orbitron", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Were5001",
-  description: "A scalable Next.js starter application.",
+  title: "SECNX | Buy & Sell OSRS & RS3 Gold, Items & Accounts",
+  description: "Instant OSRS & RS3 gold, items, and accounts with fast 2-20 minute delivery and 24/7 live support.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "512x512" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
