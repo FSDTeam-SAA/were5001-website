@@ -69,8 +69,8 @@ const ADVANTAGE_CARDS = [
         <path d="m24 31 5 5 11-12" />
       </IconContainer>
     ),
-    title: "Buy Items Instantly – No ID. No Sign-Up.",
-    description: "Skip the registration forms and verification process. With SECNX, you can place your order in minutes without creating an account or submitting ID, then collect your item as soon as your order is ready.",
+    title: "No ID / Account Required",
+    description: "We don't collect identity documents or require personal registrations to trade.",
   },
   {
     icon: (
