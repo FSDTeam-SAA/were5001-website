@@ -52,32 +52,32 @@ export const ACCOUNT_PRESETS: AccountPreset[] = [
 
 export const OSRS_SKILLS: SkillInfo[] = [
   // Row 1
-  { id: "attack", name: "ATTACK", icon: "/assets/skills/attack.png", category: "combat", ratePerM: 3.2 },
-  { id: "strength", name: "STRENGTH", icon: "/assets/skills/strength.png", category: "combat", ratePerM: 3.2 },
-  { id: "defence", name: "DEFENCE", icon: "/assets/skills/defence.png", category: "combat", ratePerM: 3.2 },
-  { id: "prayer", name: "PRAYER", icon: "/assets/skills/prayer.png", category: "support", ratePerM: 4.5 },
-  { id: "runecrafting", name: "RUNECRAFTING", icon: "/assets/skills/runecrafting.png", category: "artisan", ratePerM: 9.8 },
-  { id: "ranged", name: "RANGED", icon: "/assets/skills/ranged.png", category: "combat", ratePerM: 3.4 },
-  { id: "magic", name: "MAGIC", icon: "/assets/skills/magic.png", category: "combat", ratePerM: 3.5 },
-  { id: "crafting", name: "CRAFTING", icon: "/assets/skills/crafting.png", category: "artisan", ratePerM: 4.8 },
+  { id: "attack", name: "ATTACK", icon: "/assets/skills/attack.png", category: "combat", ratePerM: 15.56 },
+  { id: "strength", name: "STRENGTH", icon: "/assets/skills/strength.png", category: "combat", ratePerM: 15.56 },
+  { id: "defence", name: "DEFENCE", icon: "/assets/skills/defence.png", category: "combat", ratePerM: 15.56 },
+  { id: "prayer", name: "PRAYER", icon: "/assets/skills/prayer.png", category: "support", ratePerM: 16.08 },
+  { id: "runecrafting", name: "RUNECRAFTING", icon: "/assets/skills/runecrafting.png", category: "artisan", ratePerM: 32.81 },
+  { id: "ranged", name: "RANGED", icon: "/assets/skills/ranged.png", category: "combat", ratePerM: 11.49 },
+  { id: "magic", name: "MAGIC", icon: "/assets/skills/magic.png", category: "combat", ratePerM: 16.75 },
+  { id: "crafting", name: "CRAFTING", icon: "/assets/skills/crafting.png", category: "artisan", ratePerM: 14.51 },
 
   // Row 2
-  { id: "mining", name: "MINING", icon: "/assets/skills/mining.png", category: "gathering", ratePerM: 6.8 },
-  { id: "smithing", name: "SMITHING", icon: "/assets/skills/smithing.png", category: "artisan", ratePerM: 4.6 },
-  { id: "fishing", name: "FISHING", icon: "/assets/skills/fishing.png", category: "gathering", ratePerM: 5.2 },
-  { id: "cooking", name: "COOKING", icon: "/assets/skills/cooking.png", category: "artisan", ratePerM: 3.0 },
-  { id: "firemaking", name: "FIREMAKING", icon: "/assets/skills/firemaking.png", category: "artisan", ratePerM: 3.1 },
-  { id: "woodcutting", name: "WOODCUTTING", icon: "/assets/skills/woodcutting.png", category: "gathering", ratePerM: 4.8 },
-  { id: "agility", name: "AGILITY", icon: "/assets/skills/agility.png", category: "support", ratePerM: 11.5 },
-  { id: "herblore", name: "HERBLORE", icon: "/assets/skills/herblore.png", category: "artisan", ratePerM: 5.0 },
+  { id: "mining", name: "MINING", icon: "/assets/skills/mining.png", category: "gathering", ratePerM: 39.31 },
+  { id: "smithing", name: "SMITHING", icon: "/assets/skills/smithing.png", category: "artisan", ratePerM: 12.09 },
+  { id: "fishing", name: "FISHING", icon: "/assets/skills/fishing.png", category: "gathering", ratePerM: 38.64 },
+  { id: "cooking", name: "COOKING", icon: "/assets/skills/cooking.png", category: "artisan", ratePerM: 23.82 },
+  { id: "firemaking", name: "FIREMAKING", icon: "/assets/skills/firemaking.png", category: "artisan", ratePerM: 6.32 },
+  { id: "woodcutting", name: "WOODCUTTING", icon: "/assets/skills/woodcutting.png", category: "gathering", ratePerM: 18.28 },
+  { id: "agility", name: "AGILITY", icon: "/assets/skills/agility.png", category: "support", ratePerM: 38.32 },
+  { id: "herblore", name: "HERBLORE", icon: "/assets/skills/herblore.png", category: "artisan", ratePerM: 77.40 },
 
   // Row 3
-  { id: "thieving", name: "THIEVING", icon: "/assets/skills/thieving.png", category: "support", ratePerM: 4.9 },
-  { id: "fletching", name: "FLETCHING", icon: "/assets/skills/fletching.png", category: "artisan", ratePerM: 3.2 },
-  { id: "slayer", name: "SLAYER", icon: "/assets/skills/slayer.png", category: "support", ratePerM: 12.0 },
-  { id: "farming", name: "FARMING", icon: "/assets/skills/farming.png", category: "gathering", ratePerM: 6.5 },
-  { id: "construction", name: "CONSTRUCTION", icon: "/assets/skills/construction.png", category: "artisan", ratePerM: 5.4 },
-  { id: "hunter", name: "HUNTER", icon: "/assets/skills/hunter.png", category: "gathering", ratePerM: 5.8 },
+  { id: "thieving", name: "THIEVING", icon: "/assets/skills/thieving.png", category: "support", ratePerM: 28.83 },
+  { id: "fletching", name: "FLETCHING", icon: "/assets/skills/fletching.png", category: "artisan", ratePerM: 12.09 },
+  { id: "slayer", name: "SLAYER", icon: "/assets/skills/slayer.png", category: "support", ratePerM: 102.70 },
+  { id: "farming", name: "FARMING", icon: "/assets/skills/farming.png", category: "gathering", ratePerM: 17.16 },
+  { id: "construction", name: "CONSTRUCTION", icon: "/assets/skills/construction.png", category: "artisan", ratePerM: 36.54 },
+  { id: "hunter", name: "HUNTER", icon: "/assets/skills/hunter.png", category: "gathering", ratePerM: 27.34 },
 ];
 
 export const TRAINING_METHODS: TrainingMethod[] = [
